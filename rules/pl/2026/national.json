@@ -1,0 +1,106 @@
+{
+  "rulesetVersion": "pl-2026-0.1.0",
+  "country": "PL",
+  "year": 2026,
+  "yearLabel": "Rok podatkowy 2026",
+  "currency": "PLN",
+  "provenance": {
+    "source": "Ustawa o podatku dochodowym od osob fizycznych (PIT Act); Social Insurance System Act; PwC Worldwide Tax Summaries, Poland (reviewed 11 August 2026)",
+    "sourceUrl": "https://taxsummaries.pwc.com/poland/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The tax scale, the PLN 3,600 tax-reducing amount, the 2026 social security cap of PLN 282,600 and the non-deductibility of the health contribution were read from PwC Worldwide Tax Summaries on 31 August 2026."
+  },
+  "verificationTodo": [
+    "Confirm the standard employee deductible costs of PLN 250 a month (PLN 300 for a commuter from another town), which were not re-checked in this pass.",
+    "Confirm the PLN 85,528 exemption limit for the under-26 relief for 2026.",
+    "Confirm the minimum health insurance contribution rules, which this app does not apply."
+  ],
+  "omissions": [
+    "Joint filing with a spouse and the single-parent calculation are out of scope.",
+    "The child relief (ulga na dzieci), the 4+ children relief, the return relief and the working-pensioner relief are not modelled.",
+    "The solidarity levy of 4% above PLN 1,000,000 of income is modelled, but only against employment income.",
+    "The minimum monthly health contribution for low earners is not applied.",
+    "Where the under-26 exemption applies, contributions and deductible costs are apportioned to the taxable share of pay. That reflects the rule that costs relating to exempt income are not deductible, but it is a simplification of the month-by-month way payroll actually applies it."
+  ],
+  "scale": {
+    "legalRef": "Art. 27 sec. 1 PIT Act",
+    "note": "Two rates only. The PLN 30,000 tax-free amount is delivered as a PLN 3,600 reduction of the tax itself, not as an allowance against income - 12% of 30,000 is exactly 3,600.",
+    "firstThreshold": "120000",
+    "firstRate": "0.12",
+    "secondRate": "0.32",
+    "taxReducingAmount": "3600"
+  },
+  "socialInsurance": {
+    "legalRef": "Social Insurance System Act",
+    "pensionAndDisabilityRate": "0.1126",
+    "annualCap": "282600",
+    "sicknessRate": "0.0245",
+    "note": "Pension and disability contributions of 11.26% stop at an ANNUAL cap of PLN 282,600 of base. Sickness insurance of 2.45% has no cap. Both are deducted from income before tax."
+  },
+  "healthInsurance": {
+    "legalRef": "Act on health care services financed from public funds",
+    "rate": "0.09",
+    "deductible": false,
+    "note": "9% of gross pay less the social contributions. Since 2022 it is NOT deductible from tax or from income, so it behaves like a second flat tax rather than a contribution."
+  },
+  "deductibleCosts": {
+    "legalRef": "Art. 22 sec. 2 PIT Act",
+    "standardMonthly": "250",
+    "commuterMonthly": "300",
+    "note": "A fixed monthly amount, not a percentage and not actual expenses."
+  },
+  "youthRelief": {
+    "legalRef": "Art. 21 sec. 1 point 148 PIT Act",
+    "ageLimit": 26,
+    "exemptionLimit": "85528",
+    "note": "Employment income of taxpayers under 26 is exempt up to PLN 85,528 a year. Social and health contributions are still due on it."
+  },
+  "solidarityLevy": {
+    "legalRef": "Art. 30h PIT Act",
+    "threshold": "1000000",
+    "rate": "0.04",
+    "note": "A separate 4% levy on income above PLN 1,000,000, declared separately from the annual return."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "taxBaseDp": 0, "finalTaxDp": 0 },
+  "regions": [
+    {
+      "code": "pl",
+      "name": "Poland",
+      "note": "Polish personal income tax has no regional component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Wynagrodzenie brutto (gross pay, per month)",
+      "help": "Gross monthly pay in zloty. Month-by-month entry lets the app apply the annual social security cap at the point in the year where you actually reach it."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Advance tax withheld (per month)",
+      "help": "The PIT advance your employer withheld each month, for the annual comparison."
+    },
+    {
+      "id": "commuter",
+      "kind": "bool",
+      "group": "deductions",
+      "optional": true,
+      "label": "I commute from a different town",
+      "help": "Raises the standard deductible cost from PLN 250 to PLN 300 a month. It is a fixed amount; actual travel costs are not deductible."
+    },
+    {
+      "id": "under26",
+      "kind": "bool",
+      "group": "personal",
+      "optional": true,
+      "label": "I am under 26 (ulga dla mlodych)",
+      "help": "Employment income is exempt from tax up to PLN 85,528 a year. Social security and the 9% health contribution are still payable on the exempt income."
+    }
+  ]
+}

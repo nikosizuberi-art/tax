@@ -1,0 +1,49 @@
+{
+  "rulesetVersion": "es-cataluna-2026-0.1.0",
+  "country": "ES",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "cataluna",
+  "regionName": "Cataluna",
+  "provenance": {
+    "source": "Llei 2/2023 de Catalunya, escala autonomica de l IRPF",
+    "sourceUrl": "https://atc.gencat.cat/ca/tributs/irpf/",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Nine-band scale in force since 2023, carried forward to 2026. NOT verified against the current regional text."
+  },
+  "generalScale": {
+    "legalRef": "Escala autonomica de Catalunya",
+    "bands": [
+      { "upTo": "12450", "rate": "0.105" },
+      { "upTo": "17707.20", "rate": "0.12" },
+      { "upTo": "21000", "rate": "0.14" },
+      { "upTo": "33007.20", "rate": "0.15" },
+      { "upTo": "53407.20", "rate": "0.188" },
+      { "upTo": "90000", "rate": "0.215" },
+      { "upTo": "120000", "rate": "0.235" },
+      { "upTo": "175000", "rate": "0.245" },
+      { "upTo": null, "rate": "0.255" }
+    ]
+  },
+  "minimoOverrides": null,
+  "regionalDeductions": [
+    {
+      "id": "cat_alquiler",
+      "label": "Deduccio per lloguer de l habitatge habitual",
+      "rate": "0.10",
+      "cap": "300",
+      "inputId": "cat_rentPaid",
+      "eligibilityId": "cat_rentEligible",
+      "legalRef": "Art. 1 Llei 31/2002 de Catalunya",
+      "help": "Restricted to specific circumstances (under 32, unemployed for 183 days or more, degree of disability of 65% or more, widowed and 65 or over) and to regional income limits. Tick eligibility only if you meet them."
+    }
+  ],
+  "inputSchema": [
+    { "id": "cat_rentEligible", "kind": "bool", "group": "regional", "optional": true, "label": "I qualify for the Catalan rent deduction", "help": "Only for the restricted circumstances listed and within the regional income limits." },
+    { "id": "cat_rentPaid", "kind": "annual-money", "group": "regional", "optional": true, "label": "Rent paid during the year", "help": "The deduction is 10% of this, capped at 300 EUR." }
+  ],
+  "omissions": [
+    "Catalan birth, adoption, donation and mortgage-interest regional deductions are not modelled in v1."
+  ]
+}

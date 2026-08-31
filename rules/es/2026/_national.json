@@ -1,0 +1,231 @@
+{
+  "rulesetVersion": "es-national-2026-0.1.0",
+  "country": "ES",
+  "year": 2026,
+  "scope": "national",
+  "currency": "EUR",
+  "provenance": {
+    "source": "Ley 35/2006 (LIRPF) arts. 19, 20, 57-61, 63, 66, 68.3; Ley 7/2024 (escala del ahorro); Orden PJC/297/2026 (bases de cotizacion)",
+    "sourceUrl": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos.html",
+    "verifiedOn": null,
+    "confidence": "cited-unverified",
+    "notes": "Figures transcribed from the build specification and from consolidated BOE text. NOT machine-verified against the AEAT Manual Practico. Verify every value before shipping."
+  },
+  "verificationTodo": [
+    "socialSecurity.monthlyMaxBase - the 2025 value (4909.50) is carried forward. Confirm the 2026 figure in Orden PJC/297/2026 (BOE 31-03-2026).",
+    "reduccionRendimientosTrabajo - amounts follow art. 20 LIRPF as amended by RDL 20/2022. Confirm whether a later SMI-linked update applies for 2026.",
+    "minimos - confirm the arts. 57-61 amounts are unchanged for 2026."
+  ],
+  "omissions": [
+    "Cotizacion adicional de solidaridad on earnings above the maximum base (in force since 2025) is not modelled.",
+    "Increased otros gastos for unemployed persons relocating (+2000) and for workers with a disability (3500 / 7750) are not modelled.",
+    "Halving of descendant minimums under shared custody is not modelled."
+  ],
+  "stateScale": {
+    "legalRef": "Art. 63.1.1 LIRPF",
+    "note": "State half of the general scale. The familiar 19/24/30/37/45/47 table is the withholding reference of art. 101.1 LIRPF and is NOT the liability scale.",
+    "bands": [
+      { "upTo": "12450", "rate": "0.095" },
+      { "upTo": "20200", "rate": "0.12" },
+      { "upTo": "35200", "rate": "0.15" },
+      { "upTo": "60000", "rate": "0.185" },
+      { "upTo": "300000", "rate": "0.225" },
+      { "upTo": null, "rate": "0.245" }
+    ]
+  },
+  "savingsScale": {
+    "legalRef": "Arts. 66 y 76 LIRPF, redaccion Ley 7/2024",
+    "note": "Combined state plus regional savings scale. Identical in every comunidad de regimen comun. The 30% top band above 300.000 EUR applies from 01-01-2025.",
+    "bands": [
+      { "upTo": "6000", "rate": "0.19" },
+      { "upTo": "50000", "rate": "0.21" },
+      { "upTo": "200000", "rate": "0.23" },
+      { "upTo": "300000", "rate": "0.27" },
+      { "upTo": null, "rate": "0.30" }
+    ]
+  },
+  "socialSecurity": {
+    "legalRef": "Orden PJC/297/2026; LGSS art. 127 bis (MEI)",
+    "monthlyMaxBase": "4909.50",
+    "monthlyMinBase": "1381.20",
+    "rates": {
+      "contingenciasComunes": "0.047",
+      "desempleoIndefinido": "0.0155",
+      "desempleoTemporal": "0.016",
+      "formacionProfesional": "0.001",
+      "mei": "0.0015"
+    },
+    "note": "Employee share only. The MEI employee share is 0.15% in 2026 (0.90% total, 0.75% employer). The maximum base is MONTHLY, so the cap is applied month by month and then summed."
+  },
+  "gastosDeducibles": {
+    "legalRef": "Art. 19.2 LIRPF",
+    "otrosGastosGenerico": "2000",
+    "topeDefensaJuridica": "300",
+    "topeColegiosProfesionales": "500"
+  },
+  "reduccionRendimientosTrabajo": {
+    "legalRef": "Art. 20 LIRPF",
+    "amount": "6498",
+    "floor": "14047.50",
+    "ceiling": "19747.50",
+    "taperFactor": "1.14",
+    "otherIncomeLimit": "6500",
+    "note": "Full amount at or below the floor, linear taper of 1,14 x (net work income - floor) up to the ceiling, zero above. The reduction may not exceed the net work income."
+  },
+  "minimos": {
+    "legalRef": "Arts. 57-61 LIRPF",
+    "personal": "5550",
+    "mayor65": "1150",
+    "mayor75Extra": "1400",
+    "descendientes": ["2400", "2700", "4000", "4500"],
+    "descendienteMenor3Extra": "2800",
+    "discapacidad33a64": "3000",
+    "discapacidad65mas": "9000"
+  },
+  "pensionPlan": {
+    "legalRef": "Art. 52 LIRPF",
+    "percentOfWorkIncome": "0.30",
+    "absoluteCap": "1500",
+    "note": "Individual contributions are capped at the lower of 30% of net work and business income or 1.500 EUR. Employer contributions can raise the joint limit to 8.500 EUR and are out of scope in v1."
+  },
+  "donations": {
+    "legalRef": "Art. 68.3 LIRPF y art. 19 Ley 49/2002, redaccion RDL 6/2023",
+    "tier1Limit": "250",
+    "tier1Rate": "0.80",
+    "tier2Rate": "0.40",
+    "tier2RecurringRate": "0.45",
+    "baseLimitPercent": "0.10"
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "ratePercentDp": 2 },
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Rendimiento integro del trabajo (gross salary, per month)",
+      "help": "Gross pay before any deduction, month by month. Leave a month blank if you had no employment income then - a partial year is taxed on the actual total and is never annualised."
+    },
+    {
+      "id": "contractType",
+      "kind": "enum",
+      "group": "income",
+      "label": "Tipo de contrato",
+      "options": [
+        { "value": "indefinido", "label": "Indefinido (desempleo 1,55%)" },
+        { "value": "temporal", "label": "Temporal (desempleo 1,60%)" }
+      ],
+      "default": "indefinido",
+      "help": "Sets the unemployment contribution rate within your employee social security share."
+    },
+    {
+      "id": "socialSecurityOverrideMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Seguridad Social withheld (optional override, per month)",
+      "help": "Leave blank and the app computes the employee share from your gross. Fill it in only if your payslip shows a different figure."
+    },
+    {
+      "id": "retencionesMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Retencion de IRPF on each payslip (per month)",
+      "help": "IRPF actually withheld. Used only for the final refund or amount owing - it never changes the liability."
+    },
+    {
+      "id": "savingsIncome",
+      "kind": "annual-money",
+      "group": "income",
+      "optional": true,
+      "label": "Rendimientos del capital mobiliario (savings base)",
+      "help": "Interest and dividends, taxed on the separate savings scale. Capital gains are out of scope in v1."
+    },
+    {
+      "id": "pensionPlan",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Aportaciones a planes de pensiones",
+      "help": "Your own contributions to a qualifying pension plan. Capped at the lower of 30% of net work income or 1.500 EUR."
+    },
+    {
+      "id": "cuotasSindicales",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Cuotas sindicales (union dues)",
+      "help": "Union dues are deductible in full as a gasto, with no cap."
+    },
+    {
+      "id": "colegiosProfesionales",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Cuotas de colegios profesionales",
+      "help": "Deductible only where membership is compulsory for your job, and only up to 500 EUR a year."
+    },
+    {
+      "id": "defensaJuridica",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Gastos de defensa juridica",
+      "help": "Legal costs of a dispute with your employer over the employment relationship. Capped at 300 EUR a year."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Donativos (Ley 49/2002 entities)",
+      "help": "Only gifts to qualifying NGOs, foundations and public bodies. A gift to a private individual or a crowdfunding page does not qualify."
+    },
+    {
+      "id": "donationsRecurring",
+      "kind": "bool",
+      "group": "deductions",
+      "optional": true,
+      "label": "Recurring donation to the same entity",
+      "help": "Tick only if you gave to the same entity in each of the two previous years, at least matching the previous year. Raises the rate above 250 EUR from 40% to 45%."
+    },
+    {
+      "id": "age",
+      "kind": "int",
+      "group": "personal",
+      "label": "Age on 31 December",
+      "default": 40,
+      "help": "Drives the age uplift on the personal minimum (65+ and 75+)."
+    },
+    {
+      "id": "childrenUnder25",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Children under 25 living with you",
+      "help": "Descendants under 25 (any age if disabled) living with you whose own income is under 8.000 EUR. Amounts escalate by birth order: 2.400 / 2.700 / 4.000 / 4.500."
+    },
+    {
+      "id": "childrenUnder3",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Of those, children under 3",
+      "help": "Each child under three adds a further 2.800 EUR to the family minimum."
+    },
+    {
+      "id": "disabilityDegree",
+      "kind": "enum",
+      "group": "personal",
+      "optional": true,
+      "label": "Recognised degree of disability",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "d33", "label": "33% to 64% (3.000 EUR)" },
+        { "value": "d65", "label": "65% or more (9.000 EUR)" }
+      ],
+      "default": "none",
+      "help": "Officially recognised degree of disability. Adds to the personal and family minimum."
+    }
+  ]
+}

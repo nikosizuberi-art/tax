@@ -1,0 +1,98 @@
+{
+  "rulesetVersion": "in-2026-27-0.1.0",
+  "country": "IN",
+  "year": 2026,
+  "yearLabel": "Financial year 2026-27 (assessment year 2027-28)",
+  "currency": "INR",
+  "provenance": {
+    "source": "Income-tax Act 1961 s. 115BAC (new regime), s. 87A rebate, s. 288B rounding; Finance Act 2025; PwC Worldwide Tax Summaries, India",
+    "sourceUrl": "https://taxsummaries.pwc.com/india/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "PwC states these slabs apply for FY 2025/26 onwards, so they are used here for FY 2026-27. The standard deduction of INR 75,000, the s. 87A rebate of INR 60,000 up to total income of INR 12,00,000 and the surcharge rates were read from PwC and search summaries on 31 August 2026."
+  },
+  "verificationTodo": [
+    "Confirm the slabs are unchanged for FY 2026-27 and were not revised by the Finance Act 2026.",
+    "Confirm the exact marginal relief formula at the INR 12,00,000 rebate threshold and at each surcharge threshold."
+  ],
+  "omissions": [
+    "The old regime with its Chapter VI-A deductions (80C, 80D, HRA, LTA) is out of scope. The new regime is the default and is what this app computes.",
+    "Employee provident fund is collected as a contribution but is not deductible under the new regime, which is modelled correctly here.",
+    "Income other than salary, and relief under s. 89 for arrears, are not modelled."
+  ],
+  "regime": {
+    "legalRef": "s. 115BAC Income-tax Act 1961",
+    "name": "New tax regime (default)",
+    "standardDeduction": "75000",
+    "note": "The new regime has been the default since FY 2023-24. It offers lower rates and a larger standard deduction but almost no other deductions."
+  },
+  "scale": {
+    "legalRef": "s. 115BAC(1A)",
+    "bands": [
+      { "upTo": "400000", "rate": "0" },
+      { "upTo": "800000", "rate": "0.05" },
+      { "upTo": "1200000", "rate": "0.10" },
+      { "upTo": "1600000", "rate": "0.15" },
+      { "upTo": "2000000", "rate": "0.20" },
+      { "upTo": "2400000", "rate": "0.25" },
+      { "upTo": null, "rate": "0.30" }
+    ]
+  },
+  "rebate87A": {
+    "legalRef": "s. 87A",
+    "incomeLimit": "1200000",
+    "maximum": "60000",
+    "note": "A full rebate of the tax where total income does not exceed INR 12,00,000, which is what makes that income effectively tax free. Marginal relief then caps the tax just above the limit at the amount by which income exceeds it."
+  },
+  "surcharge": {
+    "legalRef": "Finance Act, First Schedule",
+    "note": "Charged on the tax, not on income, and each threshold carries its own marginal relief so that crossing it can never cost more than the extra income.",
+    "tiers": [
+      { "threshold": "5000000", "rate": "0.10" },
+      { "threshold": "10000000", "rate": "0.15" },
+      { "threshold": "20000000", "rate": "0.25" }
+    ]
+  },
+  "cess": {
+    "legalRef": "Finance Act",
+    "rate": "0.04",
+    "note": "Health and education cess of 4% is charged on income tax plus surcharge, after every rebate and relief."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "finalTaxNearest": "10" },
+  "regions": [
+    { "code": "in", "name": "India", "note": "Indian income tax has no state component." }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly salary including allowances. Enter what was actually paid each month."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "TDS deducted (per month)",
+      "help": "Tax deducted at source by your employer, used for the annual comparison."
+    },
+    {
+      "id": "epf",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Employee provident fund contribution",
+      "help": "Your own EPF contribution, usually 12% of basic pay. It reduces your take-home pay but is NOT deductible under the new regime, so it does not reduce your tax."
+    },
+    {
+      "id": "employerNps",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Employer contribution to NPS (s. 80CCD(2))",
+      "help": "One of the very few deductions that survives in the new regime, up to 14% of salary. Enter the employer's contribution, not your own."
+    }
+  ]
+}

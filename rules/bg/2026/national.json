@@ -1,0 +1,94 @@
+{
+  "rulesetVersion": "bg-2026-0.1.0",
+  "country": "BG",
+  "year": 2026,
+  "yearLabel": "Calendar year 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "Personal Income Taxes Act (ZDDFL); Social Insurance Code; State Social Insurance Budget Act 2026; PwC Worldwide Tax Summaries, Bulgaria",
+    "sourceUrl": "https://taxsummaries.pwc.com/bulgaria/individual/other-taxes",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "Employee contribution rates (10.58% social + 3.2% health), the maximum monthly insurance base and the child reliefs were read from PwC Worldwide Tax Summaries on 31 August 2026. Bulgaria adopted the euro on 1 January 2026, so all amounts here are in euro."
+  },
+  "verificationTodo": [
+    "Confirm the maximum monthly insurance base of EUR 2,111.64 to 31 July 2026 and EUR 2,300.00 from 1 August 2026 against the State Social Insurance Budget Act for 2026.",
+    "Confirm the minimum insurance thresholds by occupation, which this app does not apply.",
+    "Confirm the child relief amounts remain in force for 2026; they have been renewed year by year."
+  ],
+  "omissions": [
+    "Minimum insurance thresholds by occupational group are not applied; contributions are computed on actual pay up to the maximum base.",
+    "Donation reliefs (5%, 15% and 50% categories, aggregate cap 65% of the base), the young families mortgage interest relief, the property improvement relief and the 1% non-cash payment relief are not modelled.",
+    "The reduced contribution rate for individuals born before 1960, who do not contribute to a universal pension fund, is not modelled."
+  ],
+  "flatRate": {
+    "legalRef": "Art. 48, Personal Income Taxes Act",
+    "rate": "0.10",
+    "note": "A single flat rate on the whole taxable base. There is no tax-free personal allowance in Bulgaria, which is why the effective rate approaches 10% almost immediately."
+  },
+  "socialInsurance": {
+    "legalRef": "Social Insurance Code; Health Insurance Act",
+    "employeeSocialRate": "0.1058",
+    "employeeHealthRate": "0.032",
+    "monthlyCaps": [
+      { "months": [1, 2, 3, 4, 5, 6, 7], "cap": "2111.64" },
+      { "months": [8, 9, 10, 11, 12], "cap": "2300.00" }
+    ],
+    "note": "Employee contributions total 13.78% of gross pay, applied to a MONTHLY base that is capped. The cap rose on 1 August 2026, so two months of identical pay either side of that date produce different contributions."
+  },
+  "childRelief": {
+    "legalRef": "Arts. 22c and 22d, Personal Income Taxes Act",
+    "amounts": ["3067.75", "6135.50", "9203.25"],
+    "disabledChild": "6135.50",
+    "note": "The relief reduces the annual TAX BASE, not the tax. One child EUR 3,067.75, two children EUR 6,135.50, three or more EUR 9,203.25. Only one parent may claim."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "bg",
+      "name": "Republic of Bulgaria",
+      "note": "Bulgaria has no regional or municipal income tax on employment income."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly pay in euro. Month-by-month entry matters here: the maximum insurance base changed on 1 August 2026, so the same salary is capped differently before and after that date."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Tax withheld by your employer (per month)",
+      "help": "The 10% tax your employer withheld each month. Used only to show the annual over or underpayment."
+    },
+    {
+      "id": "children",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Children you claim relief for",
+      "help": "Children under 18 at the start of the year, where you are the only parent claiming. One child reduces the tax base by EUR 3,067.75, two by EUR 6,135.50, three or more by EUR 9,203.25."
+    },
+    {
+      "id": "disabledChildren",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Of those, children with a disability of 50% or more",
+      "help": "A child with a recognised disability of 50% or more attracts a relief of EUR 6,135.50, claimed instead of the ordinary child relief for that child."
+    },
+    {
+      "id": "voluntaryPension",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Voluntary pension contributions",
+      "help": "Contributions to a voluntary pension fund, deductible up to 10% of your taxable base. Voluntary health and life insurance premiums have a separate 10% limit that this app does not model."
+    }
+  ]
+}

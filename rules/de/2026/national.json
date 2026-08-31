@@ -1,0 +1,132 @@
+{
+  "rulesetVersion": "de-2026-0.1.0",
+  "country": "DE",
+  "year": 2026,
+  "yearLabel": "Veranlagungszeitraum 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "§ 32a EStG (Einkommensteuertarif) in the version applying from 2026; Solidaritätszuschlaggesetz 1995; SGB IV Sozialversicherungs-Rechengrößenverordnung 2026",
+    "sourceUrl": "https://www.gesetze-im-internet.de/estg/__32a.html",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The tariff coefficients were read directly from the official consolidated text of § 32a EStG at gesetze-im-internet.de on 31 August 2026, which states the version applies from assessment year 2026. Social insurance ceilings and the solidarity surcharge threshold come from secondary sources and are not verified against the Rechengrößenverordnung itself."
+  },
+  "verificationTodo": [
+    "Confirm the 2026 contribution ceilings (101,400 EUR pension and unemployment, 69,750 EUR health and long-term care) against the Sozialversicherungs-Rechengrößenverordnung 2026.",
+    "Confirm the average Zusatzbeitrag of 2.9% for 2026 and note that your own fund's rate may differ.",
+    "Confirm the solidarity surcharge Freigrenze of 20,350 EUR of assessed income tax for a single taxpayer in 2026."
+  ],
+  "omissions": [
+    "Only the Grundtarif (single) is modelled. The Splittingtarif for jointly assessed spouses is out of scope, as the specification excludes joint filing.",
+    "The Günstigerprüfung between Kinderfreibetrag and Kindergeld is not modelled, so families are shown a higher tax than they will finally bear.",
+    "Church tax is itself deductible as a Sonderausgabe in the following year; that feedback is not modelled.",
+    "The Saxon split of the long-term care contribution, under which employees bear 2.3% rather than 1.8%, is not modelled.",
+    "Actual Werbungskosten above the Arbeitnehmer-Pauschbetrag can be entered, but no category limits are enforced."
+  ],
+  "tariff": {
+    "legalRef": "§ 32a Abs. 1 EStG, Fassung ab VZ 2026",
+    "note": "Germany does not use tax brackets. The statute defines a piecewise function whose middle zones are quadratic polynomials, so the marginal rate rises continuously from 14% to 42% rather than in steps.",
+    "grundfreibetrag": "12348",
+    "zone2Upper": "17799",
+    "zone3Upper": "69878",
+    "zone4Upper": "277825",
+    "zone2": { "a": "914.51", "b": "1400" },
+    "zone3": { "a": "173.10", "b": "2397", "c": "1034.87", "offset": "17799" },
+    "zone4": { "rate": "0.42", "subtract": "11135.63" },
+    "zone5": { "rate": "0.45", "subtract": "19470.38" }
+  },
+  "solidaritySurcharge": {
+    "legalRef": "§ 4 Solidaritätszuschlaggesetz 1995",
+    "rate": "0.055",
+    "freigrenze": "20350",
+    "milderungszoneRate": "0.119",
+    "note": "No surcharge at all while assessed income tax stays at or below the Freigrenze. Above it the surcharge is the lower of 5.5% of the tax and 11.9% of the amount by which the tax exceeds the Freigrenze, which phases it in gradually."
+  },
+  "socialInsurance": {
+    "legalRef": "SGB V, SGB VI, SGB XI, SGB III",
+    "note": "Employee shares only. Pension and unemployment use one ceiling, health and long-term care another, and both ceilings are applied MONTHLY in payroll.",
+    "pension": { "employeeRate": "0.093", "monthlyCeiling": "8450" },
+    "unemployment": { "employeeRate": "0.013", "monthlyCeiling": "8450" },
+    "health": {
+      "baseEmployeeRate": "0.073",
+      "averageZusatzbeitrag": "0.029",
+      "employeeShareOfZusatzbeitrag": "0.5",
+      "monthlyCeiling": "5812.50"
+    },
+    "longTermCare": {
+      "employeeRate": "0.018",
+      "childlessSurcharge": "0.006",
+      "childlessFromAge": 23,
+      "monthlyCeiling": "5812.50"
+    }
+  },
+  "deductions": {
+    "arbeitnehmerPauschbetrag": "1230",
+    "sonderausgabenPauschbetrag": "36",
+    "altersvorsorgeHoechstbetrag": "30826",
+    "healthDeductibleFactor": "0.96",
+    "note": "Pension contributions are fully deductible up to the Höchstbetrag, which for an employee within the contribution ceiling is never reached. The health contribution is deductible at 96% of the base rate share, because 4% is treated as buying sick pay rather than basic cover."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "taxableIncomeDp": 0, "finalTaxDp": 0 },
+  "regions": [
+    {
+      "code": "uebrige-laender",
+      "name": "All states except Bavaria and Baden-Wurttemberg",
+      "churchTaxRate": "0.09",
+      "note": "Church tax is 9% of assessed income tax in every state except Bavaria and Baden-Wurttemberg."
+    },
+    {
+      "code": "bayern",
+      "name": "Bavaria",
+      "churchTaxRate": "0.08",
+      "note": "Bavaria levies church tax at 8% of assessed income tax."
+    },
+    {
+      "code": "baden-wuerttemberg",
+      "name": "Baden-Wurttemberg",
+      "churchTaxRate": "0.08",
+      "note": "Baden-Wurttemberg levies church tax at 8% of assessed income tax."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Bruttoarbeitslohn (gross pay, per month)",
+      "help": "Gross monthly pay. Month-by-month entry matters because the social insurance ceilings are applied per payroll month, so a one-off bonus is capped in the month it is paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Lohnsteuer withheld (per month)",
+      "help": "Wage tax deducted by your employer. Enter it to see whether your annual return produces a refund. Solidarity surcharge and church tax withheld can be included."
+    },
+    {
+      "id": "werbungskosten",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Werbungskosten (income-related expenses)",
+      "help": "Commuting, professional literature, work equipment, a home office allowance and similar. Leave blank and the Arbeitnehmer-Pauschbetrag of 1.230 EUR is applied; only enter a figure if your actual costs exceed it."
+    },
+    {
+      "id": "childless",
+      "kind": "bool",
+      "group": "personal",
+      "optional": true,
+      "label": "Childless and aged 23 or over",
+      "help": "Adds the 0.6 percentage point childless surcharge to your long-term care insurance, which the employee bears alone."
+    },
+    {
+      "id": "churchMember",
+      "kind": "bool",
+      "group": "personal",
+      "optional": true,
+      "label": "Member of a tax-collecting church",
+      "help": "Church tax is 8% of your income tax in Bavaria and Baden-Wurttemberg and 9% elsewhere. It is levied on the tax, not on income."
+    }
+  ]
+}

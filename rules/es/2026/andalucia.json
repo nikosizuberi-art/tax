@@ -1,0 +1,45 @@
+{
+  "rulesetVersion": "es-andalucia-2026-0.1.0",
+  "country": "ES",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "andalucia",
+  "regionName": "Andalucia",
+  "provenance": {
+    "source": "Decreto Legislativo 1/2018 de Andalucia, escala autonomica (deflactada)",
+    "sourceUrl": "https://www.juntadeandalucia.es/agenciatributariadeandalucia",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Deflated Andalusian scale carried forward to 2026. NOT verified against the current regional text."
+  },
+  "generalScale": {
+    "legalRef": "Escala autonomica de Andalucia",
+    "bands": [
+      { "upTo": "13000", "rate": "0.095" },
+      { "upTo": "21000", "rate": "0.12" },
+      { "upTo": "35200", "rate": "0.15" },
+      { "upTo": "60000", "rate": "0.185" },
+      { "upTo": null, "rate": "0.225" }
+    ]
+  },
+  "minimoOverrides": null,
+  "regionalDeductions": [
+    {
+      "id": "and_alquiler",
+      "label": "Deduccion por arrendamiento de vivienda habitual",
+      "rate": "0.15",
+      "cap": "600",
+      "inputId": "and_rentPaid",
+      "eligibilityId": "and_rentEligible",
+      "legalRef": "Art. 15 DL 1/2018 Andalucia",
+      "help": "For tenants under 35, over 65, or with a recognised disability, within the regional income limits, with a deposited fianza. Tick eligibility only if you meet every condition."
+    }
+  ],
+  "inputSchema": [
+    { "id": "and_rentEligible", "kind": "bool", "group": "regional", "optional": true, "label": "I qualify for the Andalusian rent deduction", "help": "Under 35, over 65 or with a recognised disability, within the regional income limits." },
+    { "id": "and_rentPaid", "kind": "annual-money", "group": "regional", "optional": true, "label": "Rent paid during the year", "help": "The deduction is 15% of this, capped at 600 EUR." }
+  ],
+  "omissions": [
+    "Andalusian birth, childcare, education and large-family deductions are not modelled in v1."
+  ]
+}

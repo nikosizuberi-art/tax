@@ -1,0 +1,103 @@
+{
+  "rulesetVersion": "au-2026-27-0.1.0",
+  "country": "AU",
+  "year": 2026,
+  "yearLabel": "Income year 2026-27 (1 July 2026 to 30 June 2027)",
+  "currency": "AUD",
+  "provenance": {
+    "source": "Income Tax Rates Act 1986; Medicare Levy Act 1986; PwC Worldwide Tax Summaries, Australia; ATO rates for 2026-27",
+    "sourceUrl": "https://taxsummaries.pwc.com/australia/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 2026-27 rates were confirmed against PwC Worldwide Tax Summaries on 31 August 2026, including the reduction of the lowest rate from 16% to 15% from 1 July 2026. The Medicare levy low-income threshold and the LITO taper come from secondary sources and are not verified against the ATO."
+  },
+  "verificationTodo": [
+    "Confirm the Medicare levy singles threshold of AUD 28,011 and the shade-in ceiling of AUD 35,014 for 2026-27 against the ATO.",
+    "Confirm the low income tax offset of AUD 700 and its two taper rates for 2026-27.",
+    "Family Medicare levy thresholds are not modelled at all; a taxpayer with a spouse or dependants may pay less than shown."
+  ],
+  "omissions": [
+    "HELP, VET and other study loan repayments are not modelled, and they materially change take-home pay for many graduates.",
+    "The Medicare levy surcharge for high earners without private hospital cover is not modelled.",
+    "Superannuation guarantee contributions are paid by the employer on top of salary and are not a deduction from your pay, so they do not appear here.",
+    "Family and seniors Medicare levy thresholds, and the seniors and pensioners tax offset, are not modelled."
+  ],
+  "scale": {
+    "legalRef": "Income Tax Rates Act 1986, Schedule 7",
+    "note": "The lowest rate falls from 16% to 15% from 1 July 2026 and to 14% from 1 July 2027 under the legislated tax cuts.",
+    "bands": [
+      { "upTo": "18200", "rate": "0" },
+      { "upTo": "45000", "rate": "0.15" },
+      { "upTo": "135000", "rate": "0.30" },
+      { "upTo": "190000", "rate": "0.37" },
+      { "upTo": null, "rate": "0.45" }
+    ]
+  },
+  "medicareLevy": {
+    "legalRef": "Medicare Levy Act 1986",
+    "rate": "0.02",
+    "singleThreshold": "28011",
+    "shadeInCeiling": "35014",
+    "shadeInRate": "0.10",
+    "note": "No levy at all below the threshold. Between the threshold and the ceiling only 10 cents in the dollar of the excess is charged, which is a shade-in, not a bracket. Above the ceiling the full 2% applies to the whole taxable income."
+  },
+  "lowIncomeTaxOffset": {
+    "legalRef": "Income Tax Assessment Act 1936 s. 159N",
+    "maximum": "700",
+    "taper1Start": "37500",
+    "taper1Rate": "0.05",
+    "taper2Start": "45000",
+    "taper2Rate": "0.015",
+    "zeroAt": "66667",
+    "note": "A non-refundable offset against tax. It cannot create a refund of its own, and it is withdrawn at two different rates, which lifts the effective marginal rate between AUD 37,500 and AUD 66,667."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "finalTaxDp": 0 },
+  "regions": [
+    {
+      "code": "au",
+      "name": "Australia",
+      "note": "Australian income tax is federal only. States raise payroll tax from employers, not income tax from individuals."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross pay before tax, month by month. Do not include employer superannuation: it is paid on top of your salary, not out of it."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "PAYG tax withheld (per month)",
+      "help": "Tax withheld by your employer, used to show whether you are due a refund."
+    },
+    {
+      "id": "workExpenses",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Work-related deductions",
+      "help": "Car, travel, clothing, self-education, tools and home office costs incurred earning your income, that your employer did not reimburse. You need records for anything above AUD 300 in total."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Gifts to deductible gift recipients",
+      "help": "Donations of AUD 2 or more to an organisation with DGR status. A donation cannot create or increase a tax loss."
+    },
+    {
+      "id": "concessionalSuper",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Personal deductible super contributions",
+      "help": "Voluntary contributions you make from after-tax money and then claim a deduction for, within the concessional cap. Do not include your employer's compulsory contributions."
+    }
+  ]
+}

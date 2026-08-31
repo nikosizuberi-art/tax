@@ -1,0 +1,109 @@
+{
+  "rulesetVersion": "gb-2026-27-0.1.0",
+  "country": "GB",
+  "year": 2026,
+  "yearLabel": "Tax year 2026/27 (6 April 2026 to 5 April 2027)",
+  "currency": "GBP",
+  "provenance": {
+    "source": "Income Tax Act 2007; Scottish Rate Resolution 2026/27; Social Security Contributions and Benefits Act 1992; PwC Worldwide Tax Summaries, United Kingdom",
+    "sourceUrl": "https://taxsummaries.pwc.com/united-kingdom/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "2026/27 rates, bands, the personal allowance and its taper, and the Scottish rates were read from PwC Worldwide Tax Summaries on 31 August 2026. Class 1 National Insurance rates were shown there as applying from 2025/26 onwards rather than as 2026/27 figures."
+  },
+  "verificationTodo": [
+    "Confirm the Class 1 primary threshold and upper earnings limit for 2026/27 against the HMRC rates and thresholds for employers.",
+    "Confirm the Scottish bands, which are expressed here as taxable income after the personal allowance rather than as total income."
+  ],
+  "omissions": [
+    "Student loan and postgraduate loan repayments are not modelled, and they materially change take-home pay for many graduates.",
+    "The marriage allowance, blind person's allowance, savings and dividend allowances and the high income child benefit charge are not modelled.",
+    "Salary sacrifice is not modelled separately; enter a pension contribution instead and note that sacrifice also reduces National Insurance, which this app does not reflect.",
+    "National Insurance is charged per pay period and is not reconciled annually, so a lumpy year is not smoothed. This app follows the same monthly logic."
+  ],
+  "personalAllowance": {
+    "legalRef": "s. 35 and s. 38 Income Tax Act 2007",
+    "amount": "12570",
+    "taperStart": "100000",
+    "taperRate": "0.5",
+    "note": "The allowance is withdrawn by GBP 1 for every GBP 2 of adjusted net income above GBP 100,000, so it is gone entirely at GBP 125,140. Inside that band each extra pound is taxed at 40% and also destroys 50p of allowance, producing an effective 60% marginal rate."
+  },
+  "nationalInsurance": {
+    "legalRef": "Class 1 primary contributions, Social Security Contributions and Benefits Act 1992",
+    "monthlyPrimaryThreshold": "1048",
+    "monthlyUpperEarningsLimit": "4189",
+    "mainRate": "0.08",
+    "upperRate": "0.02",
+    "note": "National Insurance is charged on each pay period, not on the annual total, and the rate FALLS from 8% to 2% above the upper earnings limit. That is the opposite direction to income tax, and it is why the combined marginal rate can drop as pay rises."
+  },
+  "giftAid": {
+    "legalRef": "Part 8 Chapter 2 Income Tax Act 2007",
+    "grossUpFactor": "1.25",
+    "note": "A Gift Aid donation is treated as paid net of basic rate tax. The gross donation extends your basic and higher rate limits and reduces adjusted net income, so a higher rate taxpayer gets relief through their tax return rather than at the charity."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "england-wales-ni",
+      "name": "England, Wales and Northern Ireland",
+      "scale": {
+        "legalRef": "s. 6 Income Tax Act 2007",
+        "note": "Applied to taxable income, that is income after the personal allowance. The bands do not move when the allowance is tapered, which is what creates the 60% band.",
+        "bands": [
+          { "upTo": "37700", "rate": "0.20" },
+          { "upTo": "125140", "rate": "0.40" },
+          { "upTo": null, "rate": "0.45" }
+        ]
+      }
+    },
+    {
+      "code": "scotland",
+      "name": "Scotland",
+      "scale": {
+        "legalRef": "Scottish Rate Resolution for 2026/27",
+        "note": "Six bands rather than three. Expressed here as taxable income after the personal allowance; the published figures are total income assuming a full allowance.",
+        "bands": [
+          { "upTo": "3967", "rate": "0.19" },
+          { "upTo": "16956", "rate": "0.20" },
+          { "upTo": "31092", "rate": "0.21" },
+          { "upTo": "62430", "rate": "0.42" },
+          { "upTo": "125140", "rate": "0.45" },
+          { "upTo": null, "rate": "0.48" }
+        ]
+      }
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross pay (per month)",
+      "help": "Gross pay before deductions, month by month. This matters more in the UK than elsewhere: National Insurance is charged on each pay period separately and is never reconciled across the year, so a bonus month costs more NI than the same money spread evenly."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Income tax deducted under PAYE (per month)",
+      "help": "Income tax only, not National Insurance. Used to show whether you are due a refund."
+    },
+    {
+      "id": "pension",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Pension contributions (net pay arrangement)",
+      "help": "Contributions taken from your gross pay before tax by your employer. Do not enter salary sacrifice here, and do not enter a relief-at-source personal pension - that works like Gift Aid and extends your bands instead."
+    },
+    {
+      "id": "giftAid",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Gift Aid donations (amount you actually gave)",
+      "help": "Enter what left your bank account. The charity reclaims basic rate tax, so the gross donation is 1.25 times your gift, and that gross figure extends your tax bands and reduces your adjusted net income."
+    }
+  ]
+}

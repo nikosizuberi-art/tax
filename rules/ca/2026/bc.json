@@ -1,0 +1,40 @@
+{
+  "rulesetVersion": "ca-bc-2026-0.1.0",
+  "country": "CA",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "bc",
+  "regionName": "British Columbia",
+  "provenance": {
+    "source": "Income Tax Act (British Columbia); CRA T4127 Chapter 8 (British Columbia); BC indexation factor 2.2% for 2026",
+    "sourceUrl": "https://www2.gov.bc.ca/gov/content/taxes/income-taxes/personal",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Brackets and BPA are the 2025 amounts indexed at 2.2% and rounded to the dollar. NOT verified against T4127 - this file is the single place to correct it."
+  },
+  "lowestRate": "0.0506",
+  "creditRate": "0.0506",
+  "brackets": {
+    "legalRef": "Income Tax Act (BC) s. 4.1",
+    "bands": [
+      { "upTo": "50363", "rate": "0.0506" },
+      { "upTo": "100728", "rate": "0.077" },
+      { "upTo": "115647", "rate": "0.105" },
+      { "upTo": "140430", "rate": "0.1229" },
+      { "upTo": "190405", "rate": "0.147" },
+      { "upTo": "265545", "rate": "0.168" },
+      { "upTo": null, "rate": "0.205" }
+    ]
+  },
+  "basicPersonalAmount": { "max": "13216", "min": "13216", "phaseOutStart": null, "phaseOutEnd": null },
+  "surtax": null,
+  "healthPremium": null,
+  "medical": { "percentOfNetIncome": "0.03", "fixedThreshold": "2891", "note": "The BC threshold differs slightly from the federal one. The federal figure is used as an approximation pending verification." },
+  "donations": { "tier1Limit": "200", "tier2Rate": "0.205" },
+  "creditsApplied": ["basicPersonalAmount", "cppBase", "ei", "medical", "donations"],
+  "omissions": [
+    "The BC tax reduction credit for low incomes is not modelled, so low incomes are overstated.",
+    "MSP premiums were eliminated in 2020 and are correctly absent."
+  ],
+  "inputSchema": []
+}

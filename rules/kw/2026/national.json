@@ -1,0 +1,67 @@
+{
+  "rulesetVersion": "kw-2026-0.1.0",
+  "country": "KW",
+  "year": 2026,
+  "yearLabel": "Calendar year 2026",
+  "currency": "KWD",
+  "provenance": {
+    "source": "Kuwait Social Security Law No. 61 of 1976 as amended; PwC Worldwide Tax Summaries, Kuwait - Individual - Other taxes",
+    "sourceUrl": "https://taxsummaries.pwc.com/kuwait/individual/other-taxes",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "Confirmed on 31 August 2026 that Kuwait levies no personal income tax on individuals, and that PIFSS contributions apply to Kuwaiti nationals only. Rates and ceilings read from PwC Worldwide Tax Summaries, not from the PIFSS schedule itself."
+  },
+  "verificationTodo": [
+    "Confirm the KWD 2,750 monthly ceiling and the KWD 1,500 ceiling on the supplementary 2.5% against the current PIFSS schedule.",
+    "Confirm the treatment of GCC nationals working in Kuwait, who contribute under their home state scheme at their home rates. This app treats them as exempt, which is an approximation."
+  ],
+  "omissions": [
+    "Terminal indemnity (end-of-service gratuity) is a contractual entitlement, not a tax, and is not modelled.",
+    "The 15% domestic minimum top-up tax introduced from 2025 applies to multinational enterprise groups, not to individuals, and is out of scope.",
+    "GCC nationals other than Kuwaitis are treated as exempt; in practice they contribute under their home country scheme."
+  ],
+  "personalIncomeTax": {
+    "levied": false,
+    "legalRef": "There is no personal income tax law in Kuwait.",
+    "note": "Kuwait does not levy income tax on individuals, whether Kuwaiti or expatriate, on employment income. Take-home pay equals gross pay less any social insurance contribution."
+  },
+  "socialInsurance": {
+    "legalRef": "Social Security Law No. 61 of 1976 (PIFSS)",
+    "appliesTo": "Kuwaiti nationals only",
+    "basicRate": "0.08",
+    "basicMonthlyCeiling": "2750",
+    "supplementaryRate": "0.025",
+    "supplementaryMonthlyCeiling": "1500",
+    "employerBasicRate": "0.115",
+    "note": "The employee pays 8% of monthly salary up to KWD 2,750, plus a supplementary 2.5% on monthly salary up to KWD 1,500. Both ceilings are monthly. Expatriate workers make no contribution."
+  },
+  "rounding": { "moneyDp": 3, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "kw",
+      "name": "State of Kuwait",
+      "note": "Kuwait has no governorate-level income tax or contribution variation."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Salary (per month)",
+      "help": "Gross monthly salary in Kuwaiti dinars. The dinar is quoted to three decimal places."
+    },
+    {
+      "id": "nationality",
+      "kind": "enum",
+      "group": "personal",
+      "label": "Status",
+      "options": [
+        { "value": "kuwaiti", "label": "Kuwaiti national" },
+        { "value": "expatriate", "label": "Expatriate worker" }
+      ],
+      "default": "expatriate",
+      "help": "PIFSS social insurance is compulsory for Kuwaiti nationals only. Expatriate workers pay neither income tax nor social insurance in Kuwait, so their gross pay is their take-home pay."
+    }
+  ]
+}

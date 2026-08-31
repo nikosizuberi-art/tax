@@ -1,0 +1,39 @@
+{
+  "rulesetVersion": "ca-ab-2026-0.1.0",
+  "country": "CA",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "ab",
+  "regionName": "Alberta",
+  "provenance": {
+    "source": "Alberta Personal Income Tax Act; CRA T4127 Chapter 8 (Alberta); Alberta Budget 2025 (new 8% bracket)",
+    "sourceUrl": "https://www.alberta.ca/personal-income-tax",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Brackets and BPA are the 2025 amounts indexed at 2.0%. Alberta has suspended indexation in some past years, so the 2026 indexation is UNCONFIRMED - verify before shipping. This file is the single place to correct it."
+  },
+  "lowestRate": "0.08",
+  "creditRate": "0.10",
+  "brackets": {
+    "legalRef": "Alberta Personal Income Tax Act s. 6.1",
+    "note": "The 8% bracket introduced for 2025 applies to income. Non-refundable credits continue to be valued at 10%, so creditRate deliberately differs from the lowest bracket rate.",
+    "bands": [
+      { "upTo": "61200", "rate": "0.08" },
+      { "upTo": "154259", "rate": "0.10" },
+      { "upTo": "185111", "rate": "0.12" },
+      { "upTo": "246813", "rate": "0.13" },
+      { "upTo": "370220", "rate": "0.14" },
+      { "upTo": null, "rate": "0.15" }
+    ]
+  },
+  "basicPersonalAmount": { "max": "22770", "min": "22770", "phaseOutStart": null, "phaseOutEnd": null },
+  "surtax": null,
+  "healthPremium": null,
+  "medical": { "percentOfNetIncome": "0.03", "fixedThreshold": "2891", "note": "The Alberta threshold differs slightly from the federal one. The federal figure is used as an approximation pending verification." },
+  "donations": { "tier1Limit": "200", "tier2Rate": "0.21" },
+  "creditsApplied": ["basicPersonalAmount", "cppBase", "ei", "medical", "donations"],
+  "omissions": [
+    "The Alberta Child and Family Benefit is a benefit, not part of tax payable, and is not modelled."
+  ],
+  "inputSchema": []
+}

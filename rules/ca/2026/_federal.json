@@ -1,0 +1,152 @@
+{
+  "rulesetVersion": "ca-federal-2026-0.1.0",
+  "country": "CA",
+  "year": 2026,
+  "scope": "national",
+  "currency": "CAD",
+  "provenance": {
+    "source": "CRA T4127 Payroll Deductions Formulas (current edition); CRA indexation adjustment for personal income tax and benefit amounts, 2026; Bill C-4 (lowest rate cut to 14% from 01-07-2025)",
+    "sourceUrl": "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4127-payroll-deductions-formulas.html",
+    "verifiedOn": null,
+    "confidence": "cited-unverified",
+    "notes": "Figures transcribed from the build specification. NOT machine-verified against T4127. Verify every value before shipping."
+  },
+  "verificationTodo": [
+    "Confirm the 2026 federal brackets against the CRA indexation page (2.0% indexation factor).",
+    "canadaEmploymentAmount - 1500 is the 2025 amount of 1471 indexed at 2.0% and rounded. Confirm against T4127.",
+    "medical.fixedThreshold - 2891 is the 2025 amount of 2834 indexed at 2.0%. Confirm against T4127."
+  ],
+  "omissions": [
+    "Tax year 2025 is not shipped. If it is added, the lowest federal rate is the blended 14.5% and the credit valuation rate for 2025 is also 14.5%.",
+    "Spousal, eligible dependant, age, pension income, disability and tuition credits are not modelled in v1.",
+    "Quebec is out of scope - it levies its own provincial return and the federal abatement applies.",
+    "The alternative minimum tax is not modelled."
+  ],
+  "lowestRate": "0.14",
+  "topBracketRateForDonations": "0.33",
+  "brackets": {
+    "legalRef": "ITA s. 117(2), indexed under s. 117.1",
+    "note": "Lowest rate is 14% for 2026. It was 15% before 01-07-2025 and blends to 14.5% for the 2025 tax year only.",
+    "bands": [
+      { "upTo": "58523", "rate": "0.14" },
+      { "upTo": "117045", "rate": "0.205" },
+      { "upTo": "181440", "rate": "0.26" },
+      { "upTo": "258482", "rate": "0.29" },
+      { "upTo": null, "rate": "0.33" }
+    ]
+  },
+  "basicPersonalAmount": {
+    "legalRef": "ITA s. 118(1.1)",
+    "max": "16452",
+    "min": "14829",
+    "phaseOutStart": "181440",
+    "phaseOutEnd": "258482",
+    "note": "Linear phase-out across the fourth bracket, based on net income. Inside the phase-out band the marginal rate is effectively 29.29%, not 29%."
+  },
+  "cpp": {
+    "legalRef": "CPP Act s. 8, 11.1; CRA T4127 s. 5",
+    "ympe": "74600",
+    "yampe": "85000",
+    "basicExemption": "3500",
+    "rate": "0.0595",
+    "maxContribution": "4230.45",
+    "baseRate": "0.0495",
+    "enhancedRate": "0.01",
+    "cpp2Rate": "0.04",
+    "cpp2MaxContribution": "416.00",
+    "note": "The base portion (4.95%) is a non-refundable credit. The enhanced portion (1.00%) and all of CPP2 are a DEDUCTION from income at line 22215, not a credit."
+  },
+  "ei": {
+    "legalRef": "EI Act s. 66-67; CRA T4127 s. 6",
+    "mie": "68900",
+    "rate": "0.0163",
+    "maxPremium": "1123.07",
+    "note": "Rate outside Quebec. EI premiums are a non-refundable credit valued at the lowest rate."
+  },
+  "canadaEmploymentAmount": {
+    "legalRef": "ITA s. 118(10)",
+    "amount": "1500",
+    "note": "Credit base is the lesser of this amount and employment income."
+  },
+  "medical": {
+    "legalRef": "ITA s. 118.2(1)",
+    "percentOfNetIncome": "0.03",
+    "fixedThreshold": "2891",
+    "note": "Only the excess of eligible expenses over the LESSER of 3% of net income and the fixed threshold is creditable."
+  },
+  "donations": {
+    "legalRef": "ITA s. 118.1(3)",
+    "tier1Limit": "200",
+    "tier1RateIsLowestRate": true,
+    "tier2Rate": "0.29",
+    "topRate": "0.33",
+    "netIncomeLimitPercent": "0.75",
+    "note": "First 200 at the lowest rate, the remainder at 29%, except that donations are credited at 33% to the extent taxable income sits in the top bracket."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "ratePercentDp": 2 },
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Employment income (gross, per month)",
+      "help": "Gross pay before deductions, month by month. Leave a month blank if you had no employment income then - a partial year is taxed on the actual total and is never annualised."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Income tax withheld on each pay (per month)",
+      "help": "Federal plus provincial tax deducted at source, from your pay stub. Used only for the final refund or balance owing."
+    },
+    {
+      "id": "rrsp",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "RRSP contributions",
+      "help": "Contributions you deduct this year, within your contribution room. A TFSA contribution is NOT deductible."
+    },
+    {
+      "id": "unionDues",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Union and professional dues",
+      "help": "Annual dues for union membership or a professional body required to keep your professional status. Not initiation fees or licences you are not required to hold."
+    },
+    {
+      "id": "childcare",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Childcare expenses",
+      "help": "Daycare, nurseries, day camps and caregivers so you could work. Per-child annual limits and a two-thirds-of-earned-income limit apply and are NOT enforced in v1 - enter the amount you can actually claim."
+    },
+    {
+      "id": "moving",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Moving expenses",
+      "help": "Only for a move that brought you at least 40 km closer to a new work or study location, and only against income earned at the new location."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Charitable donations",
+      "help": "Gifts to registered charities with an official receipt. A GoFundMe or a political contribution does not qualify here."
+    },
+    {
+      "id": "medical",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Eligible medical expenses",
+      "help": "Total eligible expenses paid. Only the excess over the lesser of 3% of net income and the fixed annual threshold produces a credit."
+    }
+  ]
+}

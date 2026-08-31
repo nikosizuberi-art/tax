@@ -1,0 +1,180 @@
+{
+  "rulesetVersion": "hk-2026-27-0.1.0",
+  "country": "HK",
+  "year": 2026,
+  "yearLabel": "Year of assessment 2026/27 (1 April 2026 to 31 March 2027)",
+  "currency": "HKD",
+  "provenance": {
+    "source": "Inland Revenue Ordinance (Cap. 112); IRD salaries tax rates and allowances for 2026/27; Inland Revenue (Amendment) (Tax Concessions, Concessionary Deductions and Allowances) Bill 2026; PwC Worldwide Tax Summaries, Hong Kong SAR",
+    "sourceUrl": "https://www.ird.gov.hk/eng/tax/ind_ctr.htm",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "Rates, the two-tiered standard rate and the 2026/27 allowances (basic allowance raised to HKD 145,000) were read from PwC Worldwide Tax Summaries and the Hong Kong government press release on the 2026-27 Budget on 31 August 2026. Not reconciled line by line against the Inland Revenue Ordinance."
+  },
+  "verificationTodo": [
+    "mpf.minMonthlyIncome and mpf.maxMonthlyIncome (7,100 and 30,000) were not re-checked against the MPFA scale in this pass.",
+    "Confirm no one-off salaries tax reduction is granted for 2026/27. The 100% reduction capped at HKD 3,000 announced in the 2026-27 Budget applied to the year of assessment 2025/26, not 2026/27."
+  ],
+  "omissions": [
+    "Married person's allowance and joint assessment are out of scope, as is personal assessment.",
+    "Dependent brother/sister, disabled dependant and single parent allowances are not modelled.",
+    "The territorial source rules are not modelled: the app assumes all income is Hong Kong sourced and chargeable."
+  ],
+  "progressiveScale": {
+    "legalRef": "Schedule 2, Inland Revenue Ordinance",
+    "note": "Applied to NET CHARGEABLE INCOME, that is income after deductions AND after personal allowances.",
+    "bands": [
+      { "upTo": "50000", "rate": "0.02" },
+      { "upTo": "100000", "rate": "0.06" },
+      { "upTo": "150000", "rate": "0.10" },
+      { "upTo": "200000", "rate": "0.14" },
+      { "upTo": null, "rate": "0.17" }
+    ]
+  },
+  "standardScale": {
+    "legalRef": "Schedule 1, Inland Revenue Ordinance (two-tiered standard rates)",
+    "note": "Applied to NET INCOME, that is income after deductions but BEFORE personal allowances. Two-tiered since 2024/25.",
+    "bands": [
+      { "upTo": "5000000", "rate": "0.15" },
+      { "upTo": null, "rate": "0.16" }
+    ]
+  },
+  "mpf": {
+    "legalRef": "Mandatory Provident Fund Schemes Ordinance (Cap. 485)",
+    "employeeRate": "0.05",
+    "minMonthlyIncome": "7100",
+    "maxMonthlyIncome": "30000",
+    "annualDeductionCap": "18000",
+    "note": "Employees contribute 5% of relevant income. No employee contribution is due in a month where relevant income is below the minimum level, and contributions are capped at 5% of the maximum level. The deduction is capped separately at HKD 18,000 a year."
+  },
+  "allowances": {
+    "legalRef": "Part 5, Inland Revenue Ordinance",
+    "basic": "145000",
+    "child": "140000",
+    "childBornDuringYearExtra": "140000",
+    "dependentParent60Plus": "55000",
+    "dependentParentResidingExtra": "55000"
+  },
+  "deductionCaps": {
+    "selfEducation": "100000",
+    "homeLoanInterest": "100000",
+    "domesticRent": "100000",
+    "voluntaryHealthInsurance": "8000",
+    "annuityAndTvc": "60000",
+    "donationsPercentOfIncome": "0.35"
+  },
+  "oneOffReduction": null,
+  "rounding": { "moneyDp": 2, "mode": "half-up", "finalTaxDp": 0, "finalTaxMode": "down" },
+  "regions": [
+    {
+      "code": "hk",
+      "name": "Hong Kong SAR",
+      "note": "Salaries tax is territory-wide. There is no district or provincial component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Income from employment (per month)",
+      "help": "Salary, wages, bonuses, commissions and allowances, month by month. Leave a month blank if you had no employment income then."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Provisional salaries tax paid (per month)",
+      "help": "Hong Kong does not withhold at source. Enter any provisional tax you have already paid for the year so the app can show what is left to settle."
+    },
+    {
+      "id": "mpfOverride",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "MPF mandatory contributions actually paid (override)",
+      "help": "Leave blank to have the app compute 5% of relevant income within the statutory levels. The deduction is capped at HKD 18,000 whatever you paid."
+    },
+    {
+      "id": "selfEducation",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Self-education expenses",
+      "help": "Fees for a prescribed course of education connected to your employment. Capped at HKD 100,000. A hobby course does not qualify."
+    },
+    {
+      "id": "homeLoanInterest",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Home loan interest",
+      "help": "Interest on a loan to buy a dwelling you occupy. Capped at HKD 100,000 a year and limited to a fixed number of years of assessment. You cannot claim this and domestic rent for the same year."
+    },
+    {
+      "id": "domesticRent",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Domestic rent",
+      "help": "Rent paid on your principal residence under a stamped tenancy. Capped at HKD 100,000. Not available if you or your spouse own a dwelling, and not combinable with home loan interest."
+    },
+    {
+      "id": "voluntaryHealthInsurance",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Voluntary Health Insurance Scheme premiums",
+      "help": "Premiums on a certified VHIS policy for yourself or a specified relative. Capped at HKD 8,000 per insured person; this app applies a single cap."
+    },
+    {
+      "id": "annuityAndTvc",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Qualifying annuity premiums and tax-deductible MPF voluntary contributions",
+      "help": "Combined cap of HKD 60,000 a year, separate from the HKD 18,000 mandatory MPF cap."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Approved charitable donations",
+      "help": "Donations of HKD 100 or more to an approved charity. Limited to 35% of your income after the other deductions."
+    },
+    {
+      "id": "children",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Number of dependent children",
+      "help": "Unmarried children under 18, or under 25 in full-time education, or unable to work through disability. HKD 140,000 each."
+    },
+    {
+      "id": "childrenBornThisYear",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Of those, children born during the year",
+      "help": "A child born during the year of assessment attracts an additional HKD 140,000 allowance for that year only."
+    },
+    {
+      "id": "dependentParents",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Dependent parents or grandparents aged 60 or above",
+      "help": "You must contribute at least HKD 12,000 a year to each one's maintenance. HKD 55,000 each."
+    },
+    {
+      "id": "dependentParentsResiding",
+      "kind": "int",
+      "group": "personal",
+      "optional": true,
+      "label": "Of those, living with you throughout the year",
+      "help": "An additional HKD 55,000 each where the parent resides with you continuously and without paying full cost."
+    }
+  ]
+}

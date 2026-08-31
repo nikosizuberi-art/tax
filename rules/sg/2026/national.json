@@ -1,0 +1,95 @@
+{
+  "rulesetVersion": "sg-2026-0.1.0",
+  "country": "SG",
+  "year": 2026,
+  "yearLabel": "Income year 2026, assessed in YA 2027",
+  "currency": "SGD",
+  "provenance": {
+    "source": "Income Tax Act 1947; IRAS individual income tax rates for YA 2024 onwards; CPF contribution rates from 1 January 2026; PwC Worldwide Tax Summaries, Singapore",
+    "sourceUrl": "https://taxsummaries.pwc.com/singapore/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The resident rate table was confirmed on 31 August 2026 as applying to YA 2026 and onwards. The CPF Ordinary Wage ceiling of SGD 8,000 a month from 1 January 2026 and the SGD 80,000 relief cap were read from secondary sources rather than from the CPF and IRAS tables directly."
+  },
+  "verificationTodo": [
+    "Confirm the CPF Ordinary Wage ceiling of SGD 8,000 a month and the annual salary ceiling of SGD 102,000 for 2026.",
+    "Confirm whether a personal income tax rebate is granted for the relevant year of assessment; none is modelled here.",
+    "Confirm the earned income relief of SGD 1,000 for taxpayers under 55."
+  ],
+  "omissions": [
+    "Additional Wage (bonus) CPF is not computed separately; the app applies the Ordinary Wage ceiling to whatever you enter in each month.",
+    "CPF rates for employees over 55 differ and are not modelled.",
+    "Non-resident taxation (a flat 15% on employment income or the resident rates, whichever is higher) is out of scope.",
+    "Parent relief, grandparent caregiver relief, NSman relief, the working mother's child relief and the foreign maid levy relief are not modelled individually; use the general reliefs field."
+  ],
+  "scale": {
+    "legalRef": "Second Schedule, Income Tax Act 1947",
+    "note": "Applied to chargeable income, that is assessable income after all reliefs. The first SGD 20,000 is untaxed.",
+    "bands": [
+      { "upTo": "20000", "rate": "0" },
+      { "upTo": "30000", "rate": "0.02" },
+      { "upTo": "40000", "rate": "0.035" },
+      { "upTo": "80000", "rate": "0.07" },
+      { "upTo": "120000", "rate": "0.115" },
+      { "upTo": "160000", "rate": "0.15" },
+      { "upTo": "200000", "rate": "0.18" },
+      { "upTo": "240000", "rate": "0.19" },
+      { "upTo": "280000", "rate": "0.195" },
+      { "upTo": "320000", "rate": "0.20" },
+      { "upTo": "500000", "rate": "0.22" },
+      { "upTo": "1000000", "rate": "0.23" },
+      { "upTo": null, "rate": "0.24" }
+    ]
+  },
+  "cpf": {
+    "legalRef": "Central Provident Fund Act 1953",
+    "employeeRate": "0.20",
+    "monthlyOrdinaryWageCeiling": "8000",
+    "annualSalaryCeiling": "102000",
+    "note": "Employees aged 55 and below contribute 20% of Ordinary Wages up to a monthly ceiling of SGD 8,000. Compulsory employee CPF is fully relieved from tax, so it reduces both take-home pay and taxable income."
+  },
+  "reliefs": {
+    "legalRef": "Part 10, Income Tax Act 1947",
+    "earnedIncomeRelief": "1000",
+    "totalReliefCap": "80000",
+    "note": "Every relief you claim, CPF included, counts against a single overall cap of SGD 80,000 for the year of assessment."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    { "code": "sg", "name": "Singapore", "note": "Singapore has no state or municipal income tax." }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly pay. The CPF Ordinary Wage ceiling is monthly, so pay above SGD 8,000 in a month attracts no further employee CPF for that month."
+    },
+    {
+      "id": "citizen",
+      "kind": "bool",
+      "group": "personal",
+      "optional": true,
+      "label": "Singapore citizen or permanent resident",
+      "default": true,
+      "help": "CPF is compulsory for citizens and permanent residents. Foreign employees on work passes do not contribute to CPF and so get no CPF relief."
+    },
+    {
+      "id": "otherReliefs",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Other personal reliefs claimed",
+      "help": "Course fees, qualifying child relief, parent relief, NSman relief, SRS contributions and so on, added together. The combined total of all reliefs including CPF is capped at SGD 80,000."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Donations to approved IPCs",
+      "help": "Qualifying donations attract a deduction of 2.5 times the amount given, and that deduction sits outside the SGD 80,000 relief cap."
+    }
+  ]
+}

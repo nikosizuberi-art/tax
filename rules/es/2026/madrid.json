@@ -1,0 +1,45 @@
+{
+  "rulesetVersion": "es-madrid-2026-0.1.0",
+  "country": "ES",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "madrid",
+  "regionName": "Comunidad de Madrid",
+  "provenance": {
+    "source": "Decreto Legislativo 1/2010 de la Comunidad de Madrid, escala autonomica",
+    "sourceUrl": "https://www.comunidad.madrid/servicios/administracion-electronica-punto-acceso-general/tributos",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Scale reflects the deflated Madrid scale in force since 2024, carried forward to 2026. NOT verified against the current regional text. This file is the single place to correct it."
+  },
+  "generalScale": {
+    "legalRef": "Escala autonomica, art. 1 DL 1/2010 CM",
+    "bands": [
+      { "upTo": "13362.22", "rate": "0.085" },
+      { "upTo": "19004.63", "rate": "0.107" },
+      { "upTo": "35425.68", "rate": "0.128" },
+      { "upTo": "57320.40", "rate": "0.174" },
+      { "upTo": null, "rate": "0.205" }
+    ]
+  },
+  "minimoOverrides": null,
+  "regionalDeductions": [
+    {
+      "id": "mad_alquiler",
+      "label": "Deduccion por arrendamiento de vivienda habitual (menores de 35 anos)",
+      "rate": "0.30",
+      "cap": "1237.20",
+      "inputId": "mad_rentPaid",
+      "eligibilityId": "mad_rentEligible",
+      "legalRef": "Art. 8 DL 1/2010 CM",
+      "help": "Under 35, rent on your habitual residence, subject to the regional income limits and to the rent being at least 20% of your income. Tick eligibility only if you meet every condition."
+    }
+  ],
+  "inputSchema": [
+    { "id": "mad_rentEligible", "kind": "bool", "group": "regional", "optional": true, "label": "I qualify for the Madrid rent deduction", "help": "Under 35, renting your habitual residence, within the regional income limits." },
+    { "id": "mad_rentPaid", "kind": "annual-money", "group": "regional", "optional": true, "label": "Rent paid during the year", "help": "Total rent on your habitual residence. The deduction is 30% of this, capped at 1.237,20 EUR." }
+  ],
+  "omissions": [
+    "Madrid childcare, birth, education and foster-care deductions are not modelled in v1."
+  ]
+}

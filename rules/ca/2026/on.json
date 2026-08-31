@@ -1,0 +1,56 @@
+{
+  "rulesetVersion": "ca-on-2026-0.1.0",
+  "country": "CA",
+  "year": 2026,
+  "scope": "region",
+  "regionCode": "on",
+  "regionName": "Ontario",
+  "provenance": {
+    "source": "Taxation Act, 2007 (Ontario); CRA T4127 Chapter 8 (Ontario); Ontario indexation factor 1.9% for 2026",
+    "sourceUrl": "https://www.ontario.ca/page/personal-income-tax",
+    "verifiedOn": null,
+    "confidence": "unverified-estimate",
+    "notes": "Brackets, BPA and surtax thresholds are the 2025 amounts indexed at 1.9% and rounded to the dollar. The 150.000 and 220.000 thresholds are not indexed. NOT verified against T4127 - this file is the single place to correct it."
+  },
+  "lowestRate": "0.0505",
+  "creditRate": "0.0505",
+  "brackets": {
+    "legalRef": "Taxation Act 2007 (ON) s. 6",
+    "bands": [
+      { "upTo": "53891", "rate": "0.0505" },
+      { "upTo": "107785", "rate": "0.0915" },
+      { "upTo": "150000", "rate": "0.1116" },
+      { "upTo": "220000", "rate": "0.1216" },
+      { "upTo": null, "rate": "0.1316" }
+    ]
+  },
+  "basicPersonalAmount": { "max": "12989", "min": "12989", "phaseOutStart": null, "phaseOutEnd": null },
+  "surtax": {
+    "legalRef": "Taxation Act 2007 (ON) s. 23",
+    "note": "A surtax on provincial TAX PAYABLE after non-refundable credits, not on income. Both layers apply above the second threshold.",
+    "tiers": [
+      { "threshold": "5819", "rate": "0.20" },
+      { "threshold": "7446", "rate": "0.36" }
+    ]
+  },
+  "healthPremium": {
+    "legalRef": "Taxation Act 2007 (ON) s. 29",
+    "note": "The Ontario Health Premium is payable on taxable income and is added to Ontario tax. Not indexed.",
+    "bands": [
+      { "over": "20000", "upTo": "36000", "base": "0", "rate": "0.06", "max": "300" },
+      { "over": "36000", "upTo": "48000", "base": "300", "rate": "0.06", "max": "450" },
+      { "over": "48000", "upTo": "72000", "base": "450", "rate": "0.25", "max": "600" },
+      { "over": "72000", "upTo": "200000", "base": "600", "rate": "0.25", "max": "750" },
+      { "over": "200000", "upTo": null, "base": "750", "rate": "0.25", "max": "900" }
+    ]
+  },
+  "medical": { "percentOfNetIncome": "0.03", "fixedThreshold": "2891", "note": "The Ontario threshold differs slightly from the federal one. The federal figure is used as an approximation pending verification." },
+  "donations": { "tier1Limit": "200", "tier2Rate": "0.1116" },
+  "creditsApplied": ["basicPersonalAmount", "cppBase", "ei", "medical", "donations"],
+  "omissions": [
+    "The Ontario LIFT low-income tax credit is not modelled, so low incomes are overstated.",
+    "The Ontario Trillium Benefit and other refundable credits are not modelled - they are benefits, not part of tax payable.",
+    "Ontario has no equivalent of the federal Canada Employment Amount."
+  ],
+  "inputSchema": []
+}

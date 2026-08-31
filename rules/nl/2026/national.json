@@ -1,0 +1,101 @@
+{
+  "rulesetVersion": "nl-2026-0.1.0",
+  "country": "NL",
+  "year": 2026,
+  "yearLabel": "Belastingjaar 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "Wet inkomstenbelasting 2001; Belastingdienst tables 'Tabel algemene heffingskorting 2026' and 'Tabel arbeidskorting 2026'; PwC Worldwide Tax Summaries, Netherlands",
+    "sourceUrl": "https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/inkomstenbelasting/heffingskortingen_boxen_tarieven/heffingskortingen/arbeidskorting/tabel-arbeidskorting-2026",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The arbeidskorting segments were read from the Belastingdienst's own 2026 table on 31 August 2026. Box 1 brackets came from PwC Worldwide Tax Summaries and the algemene heffingskorting figures from a search summary of the Belastingdienst table rather than the table itself."
+  },
+  "verificationTodo": [
+    "Confirm the algemene heffingskorting maximum of EUR 3,115, the taper start of EUR 29,736 and the taper rate of 6.398% against the Belastingdienst table directly.",
+    "Confirm the three Box 1 bracket limits for 2026."
+  ],
+  "omissions": [
+    "Only Box 1 employment income is modelled. Box 2 (substantial interest) and Box 3 (savings and investments) are out of scope.",
+    "The 30% ruling for incoming employees is not modelled, and it changes the answer substantially for those who qualify.",
+    "Mortgage interest relief and the eigenwoningforfait are not modelled.",
+    "Credits for people at or above AOW pension age use different amounts and are not modelled.",
+    "The inkomensafhankelijke combinatiekorting for working parents is not modelled."
+  ],
+  "box1Scale": {
+    "legalRef": "Art. 2.10 Wet IB 2001",
+    "note": "The first bracket rate of 35.75% is mostly national insurance: 27.65 points of it are premiums for AOW, Anw and Wlz, and only 8.10 points are income tax. It is withheld as one combined loonheffing.",
+    "nationalInsurancePortion": "0.2765",
+    "bands": [
+      { "upTo": "38883", "rate": "0.3575" },
+      { "upTo": "78426", "rate": "0.3756" },
+      { "upTo": null, "rate": "0.495" }
+    ]
+  },
+  "algemeneHeffingskorting": {
+    "legalRef": "Art. 8.10 Wet IB 2001",
+    "maximum": "3115",
+    "taperStart": "29736",
+    "taperRate": "0.06398",
+    "zeroAt": "78426",
+    "note": "A credit against tax, not an allowance against income. It is withdrawn at 6.398 cents per euro above EUR 29,736, which silently adds that much to the marginal rate across a very wide band."
+  },
+  "arbeidskorting": {
+    "legalRef": "Art. 8.11 Wet IB 2001",
+    "note": "Four segments: three building up at different speeds, then a long withdrawal. Combined with the algemene heffingskorting taper this is why Dutch marginal rates in the middle of the income range are far above the headline bracket rate.",
+    "segments": [
+      { "upTo": "11965", "base": "0", "from": "0", "rate": "0.08324", "sign": "+" },
+      { "upTo": "25845", "base": "996", "from": "11965", "rate": "0.31009", "sign": "+" },
+      { "upTo": "45592", "base": "5300", "from": "25845", "rate": "0.01950", "sign": "+" },
+      { "upTo": "132920", "base": "5685", "from": "45592", "rate": "0.06510", "sign": "-" },
+      { "upTo": null, "base": "0", "from": "0", "rate": "0", "sign": "+" }
+    ]
+  },
+  "donations": {
+    "legalRef": "Afdeling 6.9 Wet IB 2001",
+    "thresholdPercent": "0.01",
+    "capPercent": "0.10",
+    "note": "Ordinary gifts are deductible only above a threshold of 1% of income and only up to 10% of income. Periodic gifts recorded in a deed have no threshold, which this app does not model."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "nl",
+      "name": "Netherlands",
+      "note": "Dutch income tax has no provincial or municipal component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Bruto salaris (gross pay, per month)",
+      "help": "Gross monthly salary. If you receive holiday allowance (vakantiegeld) or a thirteenth month, add it to the month it is paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Loonheffing withheld (per month)",
+      "help": "The combined wage tax and national insurance your employer withheld. Used only for the annual comparison."
+    },
+    {
+      "id": "pensionPremium",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Lijfrente or annuity premiums paid",
+      "help": "Deductible only within your jaarruimte, the annual pension gap. This app does not compute your jaarruimte, so enter only the amount you can actually deduct."
+    },
+    {
+      "id": "donations",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Gifts to ANBI charities",
+      "help": "Ordinary gifts count only above 1% of your income and only up to 10% of it. A periodic gift set out in a notarial or private deed escapes the threshold entirely; that is not modelled here."
+    }
+  ]
+}
