@@ -84,7 +84,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const months = monthsWorked(monthlyGross);
   const gross = trace.add({
     id: "pl-1",
-    label: "Przychod brutto (annual gross)",
+    label: "Przychód brutto (annual gross)",
     formula: `sum of ${months} month(s) with income`,
     inputs: Object.fromEntries(monthlyGross.map((m, i) => [MONTHS[i], m])),
     output: round(sum(monthlyGross), R),
@@ -110,7 +110,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
 
   trace.add({
     id: "pl-2",
-    label: "Skladki ZUS (social insurance)",
+    label: "Składki ZUS (social insurance)",
     formula: `${pct(d(si.pensionAndDisabilityRate))} on pay up to the annual cap of ${f(cap)} = ${f(pensionDisability)}, plus ${pct(d(si.sicknessRate))} uncapped = ${f(sickness)}`,
     inputs: {
       "pension and disability": pensionDisability,
@@ -129,7 +129,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const health = round(healthBase.times(d(hi.rate)), R);
   trace.add({
     id: "pl-3",
-    label: "Skladka zdrowotna (health contribution)",
+    label: "Składka zdrowotna (health contribution)",
     formula: `${pct(d(hi.rate))} x (${f(gross)} - ${f(socialTotal)})`,
     inputs: { "health base": healthBase, rate: d(hi.rate) },
     output: health,
@@ -144,7 +144,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const exempt = under26 ? min(gross, d(yr.exemptionLimit)) : ZERO;
   trace.add({
     id: "pl-4",
-    label: "Ulga dla mlodych (under-26 exemption)",
+    label: "Ulga dla młodych (under-26 exemption)",
     formula: under26
       ? `min(${f(gross)}, ${f(d(yr.exemptionLimit))})`
       : "0 - the under-26 exemption was not claimed",
@@ -217,7 +217,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const reducing = min(d(rules.scale.taxReducingAmount), beforeReduction);
   const tax = trace.add({
     id: "pl-8",
-    label: "Kwota zmniejszajaca podatek (tax-reducing amount)",
+    label: "Kwota zmniejszająca podatek (tax-reducing amount)",
     formula: `max(0, ${f(beforeReduction)} - ${f(d(rules.scale.taxReducingAmount))})`,
     inputs: { "tax before reduction": beforeReduction, "reducing amount": reducing },
     output: round(floorZero(beforeReduction.minus(reducing)), FINAL),
@@ -231,7 +231,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const levy = round(levyBase.times(d(sl.rate)), FINAL);
   trace.add({
     id: "pl-9",
-    label: "Danina solidarnosciowa (solidarity levy)",
+    label: "Danina solidarnościowa (solidarity levy)",
     formula: levyBase.gt(0)
       ? `${pct(d(sl.rate))} x (${f(base)} - ${f(d(sl.threshold))})`
       : `0 - income is below the ${f(d(sl.threshold))} threshold`,
@@ -244,7 +244,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
 
   const totalTax = trace.add({
     id: "pl-10",
-    label: "Podatek lacznie (total tax)",
+    label: "Podatek łącznie (total tax)",
     formula: `${f(tax)} + ${f(levy)} (solidarity levy)`,
     inputs: { "income tax": tax, "solidarity levy": levy },
     output: round(tax.plus(levy), FINAL),
@@ -254,7 +254,7 @@ function core(input: CalcInput, probe: Decimal): CoreResult {
   const withheld = round(sum(readMonthly(v, "taxWithheldMonthly")), R);
   trace.add({
     id: "pl-11",
-    label: "Zwrot lub doplata (refund or amount owing)",
+    label: "Zwrot lub dopłata (refund or amount owing)",
     formula: `${f(withheld)} (advances withheld) - ${f(totalTax)} (tax due)`,
     inputs: { withheld, "tax due": totalTax },
     output: round(withheld.minus(totalTax), R),

@@ -4,44 +4,62 @@ import { useState } from "react";
 import type { FieldSpec, FieldValue, MonthlyValue } from "../engine/types";
 import { MONTHS } from "../engine/inputs";
 
-const SHORT_MONTHS = MONTHS.map((m) => m.slice(0, 3));
+const SHORT = MONTHS.map((m) => m.slice(0, 3));
+const QUARTERS = ["Q1", "Q2", "Q3", "Q4"];
 
-function Help({ text }: { text?: string }) {
+/**
+ * Help is set as a footnote: a dagger against the label itself, and the note in
+ * the statute voice underneath. Most people never open one; nobody has to
+ * scroll past fifteen of them.
+ */
+function useNote(text?: string) {
   const [open, setOpen] = useState(false);
-  if (!text) return null;
+  const mark = text ? (
+    <button
+      type="button"
+      onClick={() => setOpen((v) => !v)}
+      aria-expanded={open}
+      aria-label={open ? "Hide the note" : "Show the note"}
+      className={`f-figure ml-1 align-super text-[0.6875rem] leading-none ${
+        open ? "text-[var(--color-flag)]" : "text-[var(--color-ink-faint)]"
+      } hover:text-[var(--color-flag)]`}
+    >
+      †
+    </button>
+  ) : null;
+  const note = open && text ? <p className="margin-note mt-2">{text}</p> : null;
+  return { mark, note };
+}
+
+function Label({ field, mark }: { field: FieldSpec; mark?: React.ReactNode }) {
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="ml-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-300 text-[10px] font-semibold text-slate-500 hover:border-slate-500 hover:text-slate-700"
-      >
-        ?
-      </button>
-      {open && (
-        <p className="mt-1.5 rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-600">
-          {text}
-        </p>
+    <span className="text-[0.8125rem] leading-snug font-medium">
+      {field.label}
+      {field.optional && (
+        <span className="citation ml-1.5" style={{ fontSize: "0.625rem" }}>
+          optional
+        </span>
       )}
-    </>
+      {mark}
+    </span>
   );
 }
 
-const inputClass =
-  "w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm tabular text-right shadow-xs outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
-
-/** Twelve slots. A blank month is a month with no income, never an average. */
-export function MonthlyGrid({
+/** Twelve ruled blanks, grouped into the quarters they actually fall in. */
+function MonthlyGrid({
   field,
   value,
   onChange,
   symbol,
+  mark,
+  note,
 }: {
   field: FieldSpec;
   value: MonthlyValue;
   onChange: (v: MonthlyValue) => void;
   symbol: string;
+  mark: React.ReactNode;
+  note: React.ReactNode;
 }) {
   const filled = value.filter((v) => v !== null && v !== "").length;
 
@@ -51,57 +69,69 @@ export function MonthlyGrid({
     onChange(next);
   }
 
-  function fillDown() {
-    const first = value.find((v) => v !== null && v !== "");
-    if (first === undefined) return;
-    onChange(Array.from({ length: 12 }, () => first));
-  }
-
   return (
-    <fieldset className="rounded-lg border border-slate-200 bg-white p-4">
-      <legend className="px-1 text-sm font-medium text-slate-800">
-        {field.label}
-        <Help text={field.help} />
+    <fieldset className="mb-6">
+      <legend className="mb-1 block">
+        <Label field={field} mark={mark} />
       </legend>
-      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-        {SHORT_MONTHS.map((m, i) => (
-          <label key={m} className="flex items-center gap-2">
-            <span className="w-8 shrink-0 text-xs font-medium text-slate-500">{m}</span>
-            <span className="relative flex-1">
-              <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">
-                {symbol}
-              </span>
-              <input
-                type="text"
-                inputMode="decimal"
-                className={inputClass}
-                value={value[i] ?? ""}
-                placeholder="—"
-                onChange={(e) => setMonth(i, e.target.value)}
-                aria-label={`${field.label} - ${MONTHS[i]}`}
-              />
+      {note && <div className="mb-3">{note}</div>}
+
+      <div className="space-y-1.5">
+        {QUARTERS.map((q, qi) => (
+          <div key={q} className="flex items-end gap-2">
+            <span className="citation w-5 shrink-0 pb-1" style={{ fontSize: "0.625rem" }}>
+              {q}
             </span>
-          </label>
+            <div className="grid flex-1 grid-cols-3 gap-2">
+              {[0, 1, 2].map((mi) => {
+                const i = qi * 3 + mi;
+                return (
+                  <label key={i} className="block">
+                    <span className="citation block pb-0.5" style={{ fontSize: "0.5625rem" }}>
+                      {SHORT[i].toUpperCase()}
+                    </span>
+                    <span className="flex items-baseline gap-1">
+                      <span className="citation shrink-0" style={{ fontSize: "0.625rem" }}>
+                        {symbol}
+                      </span>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        className="blank marked"
+                        value={value[i] ?? ""}
+                        placeholder="—"
+                        onChange={(e) => setMonth(i, e.target.value)}
+                        aria-label={`${field.label} - ${MONTHS[i]}`}
+                      />
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+
+      <div className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <button
           type="button"
-          onClick={fillDown}
-          className="rounded border border-slate-300 px-2 py-1 font-medium text-slate-600 hover:border-slate-500 hover:text-slate-800"
+          onClick={() => {
+            const first = value.find((v) => v !== null && v !== "");
+            if (first !== undefined) onChange(Array.from({ length: 12 }, () => first));
+          }}
+          className="eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--color-ink)]"
         >
-          Copy first value to all 12
+          Repeat first
         </button>
         <button
           type="button"
           onClick={() => onChange(Array.from({ length: 12 }, () => null))}
-          className="rounded border border-slate-300 px-2 py-1 font-medium text-slate-600 hover:border-slate-500 hover:text-slate-800"
+          className="eyebrow underline decoration-dotted underline-offset-4 hover:text-[var(--color-ink)]"
         >
           Clear
         </button>
-        <span>
-          {filled} of 12 months entered. Blank months are treated as months with no income — the
-          year is never annualised.
+        <span className="citation">
+          {filled} of 12 entered · a blank month is a month with no income
         </span>
       </div>
     </fieldset>
@@ -119,48 +149,59 @@ export function Field({
   onChange: (v: FieldValue) => void;
   symbol: string;
 }) {
+  // The hook runs before any branch, so every field kind takes the same path.
+  const { mark, note } = useNote(field.help);
+
   if (field.kind === "monthly-money") {
     return (
       <MonthlyGrid
         field={field}
-        value={(Array.isArray(value) ? value : Array.from({ length: 12 }, () => null)) as MonthlyValue}
+        value={
+          (Array.isArray(value) ? value : Array.from({ length: 12 }, () => null)) as MonthlyValue
+        }
         onChange={onChange}
         symbol={symbol}
+        mark={mark}
+        note={note}
       />
     );
   }
 
-  const label = (
-    <span className="text-sm font-medium text-slate-800">
-      {field.label}
-      {field.optional ? <span className="ml-1 text-xs text-slate-400">optional</span> : null}
-    </span>
-  );
-
   if (field.kind === "bool") {
+    const checked = value === true;
     return (
-      <div className="rounded-lg border border-slate-200 bg-white p-3">
-        <label className="flex items-start gap-2">
+      <div className="mb-4">
+        <label className="flex cursor-pointer items-start gap-2.5">
+          <span
+            aria-hidden
+            className={`f-figure mt-0.5 grid h-4 w-4 flex-none place-items-center border text-[0.625rem] leading-none ${
+              checked
+                ? "border-[var(--color-ink)] bg-[var(--color-mark)]"
+                : "border-[var(--color-rule)] bg-transparent"
+            }`}
+          >
+            {checked ? "×" : ""}
+          </span>
           <input
             type="checkbox"
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-200"
-            checked={value === true}
+            className="sr-only"
+            checked={checked}
             onChange={(e) => onChange(e.target.checked)}
           />
-          {label}
+          <Label field={field} mark={mark} />
         </label>
-        <Help text={field.help} />
+        {note && <div className="pl-6">{note}</div>}
       </div>
     );
   }
 
   if (field.kind === "enum") {
     return (
-      <div className="rounded-lg border border-slate-200 bg-white p-3">
+      <div className="mb-4">
         <label className="block">
-          {label}
+          <Label field={field} mark={mark} />
           <select
-            className="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="picker mt-1"
             value={typeof value === "string" ? value : String(field.default ?? "")}
             onChange={(e) => onChange(e.target.value)}
           >
@@ -171,33 +212,40 @@ export function Field({
             ))}
           </select>
         </label>
-        <Help text={field.help} />
+        {note}
       </div>
     );
   }
 
   const isMoney = field.kind === "annual-money";
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-3">
-      <label className="block">
-        {label}
-        <span className="relative mt-1.5 block">
+    <div className="mb-4">
+      <label className="flex items-baseline gap-3">
+        <span className="flex-1">
+          <Label field={field} mark={mark} />
+        </span>
+        <span className="flex w-32 shrink-0 items-baseline gap-1">
           {isMoney && (
-            <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+            <span className="citation shrink-0" style={{ fontSize: "0.625rem" }}>
               {symbol}
             </span>
           )}
           <input
             type="text"
             inputMode={isMoney ? "decimal" : "numeric"}
-            className={inputClass}
-            value={value === null || value === undefined || typeof value === "boolean" || Array.isArray(value) ? "" : String(value)}
+            className="blank marked"
+            value={
+              value === null || value === undefined || typeof value === "boolean" ||
+              Array.isArray(value)
+                ? ""
+                : String(value)
+            }
             placeholder={isMoney ? (symbol === "€" ? "0,00" : "0.00") : String(field.default ?? "0")}
             onChange={(e) => onChange(e.target.value)}
           />
         </span>
       </label>
-      <Help text={field.help} />
+      {note}
     </div>
   );
 }

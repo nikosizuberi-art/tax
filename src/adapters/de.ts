@@ -336,7 +336,7 @@ export const deAdapter: CountryAdapter = {
   contributionLabel: "Sozialversicherung",
   regionLabel: "Bundesland",
   regionNote:
-    "Germany has no regional income tax, but the church tax rate is 8% in Bavaria and Baden-Wurttemberg and 9% everywhere else, so the state matters if you are a church member.",
+    "Germany has no regional income tax, but the church tax rate is 8% in Bavaria and Baden-Württemberg and 9% everywhere else, so the state matters if you are a church member.",
 
   years: () => genericYears("DE"),
   regions: (year) => genericRegions("DE", year),

@@ -6,14 +6,14 @@
   "regionCode": "madrid",
   "regionName": "Comunidad de Madrid",
   "provenance": {
-    "source": "Decreto Legislativo 1/2010 de la Comunidad de Madrid, escala autonomica",
+    "source": "Decreto Legislativo 1/2010 de la Comunidad de Madrid, escala autonómica",
     "sourceUrl": "https://www.comunidad.madrid/servicios/administracion-electronica-punto-acceso-general/tributos",
     "verifiedOn": null,
     "confidence": "unverified-estimate",
     "notes": "Scale reflects the deflated Madrid scale in force since 2024, carried forward to 2026. NOT verified against the current regional text. This file is the single place to correct it."
   },
   "generalScale": {
-    "legalRef": "Escala autonomica, art. 1 DL 1/2010 CM",
+    "legalRef": "Escala autonómica, art. 1 DL 1/2010 CM",
     "bands": [
       { "upTo": "13362.22", "rate": "0.085" },
       { "upTo": "19004.63", "rate": "0.107" },
@@ -26,7 +26,7 @@
   "regionalDeductions": [
     {
       "id": "mad_alquiler",
-      "label": "Deduccion por arrendamiento de vivienda habitual (menores de 35 anos)",
+      "label": "Deducción por arrendamiento de vivienda habitual (menores de 35 anos)",
       "rate": "0.30",
       "cap": "1237.20",
       "inputId": "mad_rentPaid",

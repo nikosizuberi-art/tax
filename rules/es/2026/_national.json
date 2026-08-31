@@ -102,7 +102,7 @@
       "id": "grossMonthly",
       "kind": "monthly-money",
       "group": "income",
-      "label": "Rendimiento integro del trabajo (gross salary, per month)",
+      "label": "Rendimiento íntegro del trabajo (gross salary, per month)",
       "help": "Gross pay before any deduction, month by month. Leave a month blank if you had no employment income then - a partial year is taxed on the actual total and is never annualised."
     },
     {
@@ -130,7 +130,7 @@
       "kind": "monthly-money",
       "group": "income",
       "optional": true,
-      "label": "Retencion de IRPF on each payslip (per month)",
+      "label": "Retención de IRPF on each payslip (per month)",
       "help": "IRPF actually withheld. Used only for the final refund or amount owing - it never changes the liability."
     },
     {
@@ -170,7 +170,7 @@
       "kind": "annual-money",
       "group": "deductions",
       "optional": true,
-      "label": "Gastos de defensa juridica",
+      "label": "Gastos de defensa jurídica",
       "help": "Legal costs of a dispute with your employer over the employment relationship. Capped at 300 EUR a year."
     },
     {

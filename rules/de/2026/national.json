@@ -71,9 +71,9 @@
   "regions": [
     {
       "code": "uebrige-laender",
-      "name": "All states except Bavaria and Baden-Wurttemberg",
+      "name": "All states except Bavaria and Baden-Württemberg",
       "churchTaxRate": "0.09",
-      "note": "Church tax is 9% of assessed income tax in every state except Bavaria and Baden-Wurttemberg."
+      "note": "Church tax is 9% of assessed income tax in every state except Bavaria and Baden-Württemberg."
     },
     {
       "code": "bayern",
@@ -83,9 +83,9 @@
     },
     {
       "code": "baden-wuerttemberg",
-      "name": "Baden-Wurttemberg",
+      "name": "Baden-Württemberg",
       "churchTaxRate": "0.08",
-      "note": "Baden-Wurttemberg levies church tax at 8% of assessed income tax."
+      "note": "Baden-Württemberg levies church tax at 8% of assessed income tax."
     }
   ],
   "inputSchema": [
@@ -126,7 +126,7 @@
       "group": "personal",
       "optional": true,
       "label": "Member of a tax-collecting church",
-      "help": "Church tax is 8% of your income tax in Bavaria and Baden-Wurttemberg and 9% elsewhere. It is levied on the tax, not on income."
+      "help": "Church tax is 8% of your income tax in Bavaria and Baden-Württemberg and 9% elsewhere. It is levied on the tax, not on income."
     }
   ]
 }

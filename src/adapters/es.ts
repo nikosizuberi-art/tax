@@ -60,7 +60,7 @@ function core(input: CalcInput, probe: Decimal): Core {
   const months = monthsWorked(monthlyGross);
   const workGross = trace.add({
     id: "es-1",
-    label: "Rendimiento integro del trabajo (annual gross)",
+    label: "Rendimiento íntegro del trabajo (annual gross)",
     formula: `sum of ${months} month(s) with income`,
     inputs: Object.fromEntries(monthlyGross.map((m, i) => [MONTHS[i], m])),
     output: round(sum(monthlyGross), R),
@@ -133,12 +133,12 @@ function core(input: CalcInput, probe: Decimal): Core {
   const gastos = trace.add({
     id: "es-3",
     label: "Gastos deducibles",
-    formula: `${f(social)} (SS) + ${f(unionDues)} (cuotas sindicales) + ${f(colegios)} (colegios, tope ${f(d(national.gastosDeducibles.topeColegiosProfesionales))}) + ${f(defensa)} (defensa juridica, tope ${f(d(national.gastosDeducibles.topeDefensaJuridica))}) + ${f(otrosGastos)} (otros gastos)`,
+    formula: `${f(social)} (SS) + ${f(unionDues)} (cuotas sindicales) + ${f(colegios)} (colegios, tope ${f(d(national.gastosDeducibles.topeColegiosProfesionales))}) + ${f(defensa)} (defensa jurídica, tope ${f(d(national.gastosDeducibles.topeDefensaJuridica))}) + ${f(otrosGastos)} (otros gastos)`,
     inputs: {
       "seguridad social": social,
       "cuotas sindicales": unionDues,
       "colegios profesionales": colegios,
-      "defensa juridica": defensa,
+      "defensa jurídica": defensa,
       "otros gastos": otrosGastos,
     },
     output: round(namedGastos.plus(otrosGastos), R),
@@ -152,13 +152,13 @@ function core(input: CalcInput, probe: Decimal): Core {
     id: "es-4",
     label: "Rendimiento neto del trabajo",
     formula: `${f(workGross)} - ${f(gastos)}`,
-    inputs: { "rendimiento integro": workGross, "gastos deducibles": gastos },
+    inputs: { "rendimiento íntegro": workGross, "gastos deducibles": gastos },
     output: round(workGross.minus(gastos), R),
     legalRef: "Art. 19 LIRPF",
     unit: "money",
   });
 
-  /* 5. Reduccion por obtencion de rendimientos del trabajo ---------------- */
+  /* 5. Reducción por obtención de rendimientos del trabajo ---------------- */
   const red = national.reduccionRendimientosTrabajo;
   const savings = readAnnual(v, "savingsIncome");
   const otherIncomeLimit = d(red.otherIncomeLimit);
@@ -182,7 +182,7 @@ function core(input: CalcInput, probe: Decimal): Core {
 
   trace.add({
     id: "es-5",
-    label: "Reduccion por obtencion de rendimientos del trabajo",
+    label: "Reducción por obtención de rendimientos del trabajo",
     formula: reduccionFormula,
     inputs: {
       "rendimiento neto": rendimientoNeto,
@@ -228,7 +228,7 @@ function core(input: CalcInput, probe: Decimal): Core {
     unit: "money",
   });
 
-  /* 8. Minimo personal y familiar ----------------------------------------- */
+  /* 8. Mínimo personal y familiar ----------------------------------------- */
   const m = { ...national.minimos, ...(region.minimoOverrides ?? {}) };
   const age = readInt(v, "age", 40);
   const children = readInt(v, "childrenUnder25");
@@ -247,7 +247,7 @@ function core(input: CalcInput, probe: Decimal): Core {
 
   const minimo = trace.add({
     id: "es-8",
-    label: "Minimo personal y familiar",
+    label: "Mínimo personal y familiar",
     formula: `${f(d(m.personal))} (personal) + ${f(ageUplift)} (edad) + ${f(childTotal)} (${children} descendiente(s)) + ${f(under3Total)} (${under3} menor(es) de 3) + ${f(disabilityAmount)} (discapacidad)`,
     inputs: {
       personal: d(m.personal),
@@ -262,7 +262,7 @@ function core(input: CalcInput, probe: Decimal): Core {
     unit: "money",
   });
 
-  /* 9. Cuota integra - the scale is applied twice ------------------------- */
+  /* 9. Cuota íntegra - the scale is applied twice ------------------------- */
   const minimoGeneral = min(minimo, baseLiquidable);
   const minimoResto = minimo.minus(minimoGeneral);
 
@@ -270,7 +270,7 @@ function core(input: CalcInput, probe: Decimal): Core {
   const stateOnMin = evaluateScale(minimoGeneral, national.stateScale, R);
   const cuotaEstatal = trace.add({
     id: "es-9a",
-    label: "Cuota integra estatal",
+    label: "Cuota íntegra estatal",
     formula: `escala_estatal(${f(baseLiquidable)}) - escala_estatal(${f(minimoGeneral)}) = ${f(stateOnBase.total)} - ${f(stateOnMin.total)}`,
     inputs: {
       "base liquidable general": baseLiquidable,
@@ -289,8 +289,8 @@ function core(input: CalcInput, probe: Decimal): Core {
   const regionOnMin = evaluateScale(minimoGeneral, region.generalScale, R);
   const cuotaAutonomica = trace.add({
     id: "es-9b",
-    label: `Cuota integra autonomica (${region.regionName})`,
-    formula: `escala_autonomica(${f(baseLiquidable)}) - escala_autonomica(${f(minimoGeneral)}) = ${f(regionOnBase.total)} - ${f(regionOnMin.total)}`,
+    label: `Cuota íntegra autonómica (${region.regionName})`,
+    formula: `escala_autonómica(${f(baseLiquidable)}) - escala_autonómica(${f(minimoGeneral)}) = ${f(regionOnBase.total)} - ${f(regionOnMin.total)}`,
     inputs: {
       "base liquidable general": baseLiquidable,
       "minimo aplicado a la base general": minimoGeneral,
@@ -309,7 +309,7 @@ function core(input: CalcInput, probe: Decimal): Core {
   const savingsOnMin = evaluateScale(minimoAhorro, national.savingsScale, R);
   const cuotaAhorro = trace.add({
     id: "es-10",
-    label: "Cuota integra del ahorro",
+    label: "Cuota íntegra del ahorro",
     formula: savings.isZero()
       ? "0 - no savings income entered"
       : `escala_ahorro(${f(savings)}) - escala_ahorro(${f(minimoAhorro)}) = ${f(savingsOnBase.total)} - ${f(savingsOnMin.total)}`,
@@ -326,14 +326,14 @@ function core(input: CalcInput, probe: Decimal): Core {
 
   const cuotaIntegra = trace.add({
     id: "es-10b",
-    label: "Cuota integra total",
-    formula: `${f(cuotaEstatal)} (estatal) + ${f(cuotaAutonomica)} (autonomica) + ${f(cuotaAhorro)} (ahorro)`,
-    inputs: { estatal: cuotaEstatal, autonomica: cuotaAutonomica, ahorro: cuotaAhorro },
+    label: "Cuota íntegra total",
+    formula: `${f(cuotaEstatal)} (estatal) + ${f(cuotaAutonomica)} (autonómica) + ${f(cuotaAhorro)} (ahorro)`,
+    inputs: { estatal: cuotaEstatal, autonómica: cuotaAutonomica, ahorro: cuotaAhorro },
     output: round(cuotaEstatal.plus(cuotaAutonomica).plus(cuotaAhorro), R),
     unit: "money",
   });
 
-  /* 11. Deducciones -> cuota liquida -------------------------------------- */
+  /* 11. Deducciones -> cuota líquida -------------------------------------- */
   const don = national.donations;
   const donationsGiven = readAnnual(v, "donations");
   const donationCeiling = d(don.baseLimitPercent).times(baseLiquidable.plus(savings));
@@ -354,7 +354,7 @@ function core(input: CalcInput, probe: Decimal): Core {
 
   trace.add({
     id: "es-11a",
-    label: "Deduccion por donativos",
+    label: "Deducción por donativos",
     formula: donationBase.isZero()
       ? "0 - no qualifying donations entered"
       : `${pct(d(don.tier1Rate))} x ${f(tier1)} + ${pct(tier2Rate)} x ${f(tier2)}`,
@@ -394,9 +394,9 @@ function core(input: CalcInput, probe: Decimal): Core {
   const deducciones = sum([donationCredit, ...regionalCredits.map((c) => c.credit)]);
   const cuotaLiquida = trace.add({
     id: "es-11",
-    label: "Cuota liquida (total tax due)",
+    label: "Cuota líquida (total tax due)",
     formula: `${f(cuotaIntegra)} - ${f(deducciones)}`,
-    inputs: { "cuota integra": cuotaIntegra, deducciones },
+    inputs: { "cuota íntegra": cuotaIntegra, deducciones },
     output: floorZero(round(cuotaIntegra.minus(deducciones), R)),
     legalRef: "Arts. 67 y 77 LIRPF",
     unit: "money",
@@ -407,9 +407,9 @@ function core(input: CalcInput, probe: Decimal): Core {
   const withheld = round(sum(withheldMonthly), R);
   trace.add({
     id: "es-12",
-    label: "Resultado de la declaracion",
-    formula: `${f(withheld)} (retenciones) - ${f(cuotaLiquida)} (cuota liquida)`,
-    inputs: { retenciones: withheld, "cuota liquida": cuotaLiquida },
+    label: "Resultado de la declaración",
+    formula: `${f(withheld)} (retenciones) - ${f(cuotaLiquida)} (cuota líquida)`,
+    inputs: { retenciones: withheld, "cuota líquida": cuotaLiquida },
     output: round(withheld.minus(cuotaLiquida), R),
     note: "Positive means a refund (a devolver); negative means an amount owing (a ingresar).",
     unit: "money",
@@ -451,7 +451,7 @@ export const esAdapter: CountryAdapter = {
   locale: "es-ES",
   label: "Spain",
   contributionLabel: "Seguridad Social",
-  regionLabel: "Comunidad autonoma",
+  regionLabel: "Comunidad autónoma",
   regionNote:
     "Half of Spanish income tax is set by your comunidad autonoma, and the combined top rate varies by roughly eight percentage points across regions. A result without a region would be meaningless.",
 
@@ -479,7 +479,7 @@ export const esAdapter: CountryAdapter = {
     base.trace.add({
       id: "es-13",
       label: "Tipo marginal efectivo",
-      formula: `(cuota liquida on ${f(totalIncome.plus(PROBE))} - cuota liquida on ${f(totalIncome)}) / ${f(PROBE)}`,
+      formula: `(cuota líquida on ${f(totalIncome.plus(PROBE))} - cuota líquida on ${f(totalIncome)}) / ${f(PROBE)}`,
       inputs: {
         "cuota actual": base.incomeTax,
         "cuota con 100 EUR mas": bumped.incomeTax,

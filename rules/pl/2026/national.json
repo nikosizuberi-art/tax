@@ -99,7 +99,7 @@
       "kind": "bool",
       "group": "personal",
       "optional": true,
-      "label": "I am under 26 (ulga dla mlodych)",
+      "label": "I am under 26 (ulga dla młodych)",
       "help": "Employment income is exempt from tax up to PLN 85,528 a year. Social security and the 9% health contribution are still payable on the exempt income."
     }
   ]

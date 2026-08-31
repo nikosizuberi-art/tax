@@ -6,14 +6,14 @@
   "regionCode": "comunidad-valenciana",
   "regionName": "Comunidad Valenciana",
   "provenance": {
-    "source": "Ley 13/1997 de la Generalitat Valenciana, escala autonomica (deflactada)",
+    "source": "Ley 13/1997 de la Generalitat Valenciana, escala autonómica (deflactada)",
     "sourceUrl": "https://atv.gva.es/es/tributos-impuestos-declaraciones-irpf",
     "verifiedOn": null,
     "confidence": "unverified-estimate",
     "notes": "Deflated Valencian scale carried forward to 2026. NOT verified against the current regional text."
   },
   "generalScale": {
-    "legalRef": "Escala autonomica de la Comunitat Valenciana",
+    "legalRef": "Escala autonómica de la Comunitat Valenciana",
     "bands": [
       { "upTo": "12000", "rate": "0.09" },
       { "upTo": "22000", "rate": "0.12" },
@@ -32,7 +32,7 @@
   "regionalDeductions": [
     {
       "id": "val_alquiler",
-      "label": "Deduccion por arrendamiento de vivienda habitual",
+      "label": "Deducción por arrendamiento de vivienda habitual",
       "rate": "0.20",
       "cap": "800",
       "inputId": "val_rentPaid",

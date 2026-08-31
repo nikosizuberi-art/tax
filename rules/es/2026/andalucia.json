@@ -4,16 +4,16 @@
   "year": 2026,
   "scope": "region",
   "regionCode": "andalucia",
-  "regionName": "Andalucia",
+  "regionName": "Andalucía",
   "provenance": {
-    "source": "Decreto Legislativo 1/2018 de Andalucia, escala autonomica (deflactada)",
+    "source": "Decreto Legislativo 1/2018 de Andalucia, escala autonómica (deflactada)",
     "sourceUrl": "https://www.juntadeandalucia.es/agenciatributariadeandalucia",
     "verifiedOn": null,
     "confidence": "unverified-estimate",
     "notes": "Deflated Andalusian scale carried forward to 2026. NOT verified against the current regional text."
   },
   "generalScale": {
-    "legalRef": "Escala autonomica de Andalucia",
+    "legalRef": "Escala autonómica de Andalucia",
     "bands": [
       { "upTo": "13000", "rate": "0.095" },
       { "upTo": "21000", "rate": "0.12" },
@@ -26,7 +26,7 @@
   "regionalDeductions": [
     {
       "id": "and_alquiler",
-      "label": "Deduccion por arrendamiento de vivienda habitual",
+      "label": "Deducción por arrendamiento de vivienda habitual",
       "rate": "0.15",
       "cap": "600",
       "inputId": "and_rentPaid",
