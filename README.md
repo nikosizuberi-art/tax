@@ -73,6 +73,19 @@ Money is `Decimal` throughout; floats are never used for money. Rounding is an e
 
 **The marginal rate is measured, not looked up.** The whole pipeline runs again with a little more gross pay and the difference is divided by the increment. That is the only way to capture Spain's tapering work-income reduction, the UK's 60% band, India's marginal relief, Australia's Medicare shade-in and Hong Kong's *falling* marginal rate without hand-coding each one.
 
+## Saving a PDF
+
+After a calculation there is a **Save as PDF** action. It uses the browser's own print-to-PDF, so the document never leaves the machine and comes out as real vector text with selectable, copyable figures — no rasterising library, no server round trip, nothing that would weaken the privacy promise.
+
+What prints is not the screen reflowed onto paper. `PrintableReport` is a separate document built for the job:
+
+- every trace line **expanded** — formula, expanded bands, the note and the legal authority — because a collapsed accordion is useless on paper;
+- a **schedule of what was entered**, restating the twelve monthly figures and the fields you filled in, so the sheet stands alone as evidence of its own inputs;
+- the summary, the reviewer's notes, the legal notice and the full ruleset provenance including what is still unverified;
+- A4 page setup, `break-inside: avoid` on each step so a line never splits across a page, and a document reference in the header.
+
+The saved file is named from the jurisdiction and date — `estimate-of-liability-ES-2026-MADRID-2026-09-01.pdf` — rather than from the page title.
+
 ## The trace
 
 Each step appends a `TraceStep` carrying its id, label, formula, inputs, output, legal reference and — for bracket steps — every expanded band. The user-facing explanation is rendered from those objects, so the words and the number come from the same source and cannot drift. No explanatory prose is written by hand anywhere.
