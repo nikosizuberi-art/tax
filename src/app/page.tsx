@@ -8,6 +8,7 @@ import { emptyMonths } from "../engine/inputs";
 import { Field } from "../components/Fields";
 import { ResultBlock, ReviewerNotes, Provenance, LegalNotice } from "../components/Results";
 import { WorkingPaper } from "../components/WorkingPaper";
+import { PrintableReport } from "../components/PrintableReport";
 
 /** The groups are the schedules of a return, so they are lettered like one. */
 const SECTIONS: Record<FieldSpec["group"], { letter: string; title: string; blurb: string }> = {
@@ -97,8 +98,26 @@ export default function Page() {
   const blank = !result || result.summary.annualGross.lte(0);
   const reference = `${country}-${year}-${regionCode}`.toUpperCase();
 
+  /**
+   * The PDF is the browser's own print-to-PDF, so the document never leaves the
+   * machine and comes out as real selectable text. Retitling the document first
+   * is what gives the saved file a useful name instead of the page title.
+   */
+  function saveAsPdf() {
+    if (!result) return;
+    const original = document.title;
+    document.title = `estimate-of-liability-${reference}-${result.computedAt.slice(0, 10)}`;
+    const restore = () => {
+      document.title = original;
+      window.removeEventListener("afterprint", restore);
+    };
+    window.addEventListener("afterprint", restore);
+    window.print();
+  }
+
   return (
-    <main className="mx-auto max-w-[86rem] px-5 py-8 sm:px-8 lg:py-12">
+    <>
+    <main className="screen-only mx-auto max-w-[86rem] px-5 py-8 sm:px-8 lg:py-12">
       {/* ---------------------------------------------------------- masthead */}
       <header className="border-b-[1.5px] border-[var(--color-ink)] pb-6">
         <div className="flex flex-wrap items-start justify-between gap-6">
@@ -231,6 +250,14 @@ export default function Page() {
             </div>
           ) : (
             <div key={blank ? "blank" : "live"} className="settle space-y-6">
+              {!blank && (
+                <div className="flex flex-wrap items-baseline justify-end gap-3">
+                  <p className="citation">Includes every line, its basis and the caveats.</p>
+                  <button type="button" className="action" onClick={saveAsPdf}>
+                    Save as PDF
+                  </button>
+                </div>
+              )}
               <ResultBlock result={result} blank={blank} />
               <WorkingPaper
                 steps={result.steps}
@@ -255,5 +282,13 @@ export default function Page() {
         </p>
       </footer>
     </main>
+
+    {/* The printed document is built for paper, not reflowed from the screen. */}
+    {mounted && result && !blank && (
+      <div className="print-only">
+        <PrintableReport result={result} fields={fields} values={values} />
+      </div>
+    )}
+    </>
   );
 }
