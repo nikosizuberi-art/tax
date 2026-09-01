@@ -1,0 +1,93 @@
+{
+  "rulesetVersion": "kr-2026-0.1.0",
+  "country": "KR",
+  "year": 2026,
+  "yearLabel": "Tax year 2026",
+  "currency": "KRW",
+  "provenance": {
+    "source": "Income Tax Act arts. 47 and 55; Local Tax Act; PwC Worldwide Tax Summaries, Korea",
+    "sourceUrl": "https://taxsummaries.pwc.com/republic-of-korea/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The eight global income brackets and the 10% local income tax came from PwC on 31 August 2026, as did the KRW 20 million cap on the earned income deduction. The deduction's own rate schedule was not given there."
+  },
+  "verificationTodo": [
+    "The earned income deduction rate schedule (70%, 40%, 15%, 5%, 2%) was NOT confirmed by a source in this pass, only its KRW 20 million cap. It drives the whole result and must be checked.",
+    "The earned income tax credit and the standard personal deduction of KRW 1.5 million were not confirmed.",
+    "Social insurance rates are approximations and the national pension contribution ceiling is not applied."
+  ],
+  "omissions": [
+    "The earned income tax credit, which reduces tax further for most employees, is not modelled, so tax is overstated.",
+    "Deductions for dependants, credit card spending, housing and pension savings are not modelled.",
+    "The national pension contribution ceiling is not applied, so contributions are overstated for high earners."
+  ],
+  "earnedIncomeDeduction": {
+    "legalRef": "Art. 47 Income Tax Act",
+    "cap": "20000000",
+    "note": "A statutory deduction that falls away sharply as income rises: 70% of the first tranche but only 2% at the top, and capped at KRW 20 million.",
+    "tiers": [
+      { "upTo": "5000000", "base": "0", "from": "0", "rate": "0.70" },
+      { "upTo": "15000000", "base": "3500000", "from": "5000000", "rate": "0.40" },
+      { "upTo": "45000000", "base": "7500000", "from": "15000000", "rate": "0.15" },
+      { "upTo": "100000000", "base": "12000000", "from": "45000000", "rate": "0.05" },
+      { "upTo": null, "base": "14750000", "from": "100000000", "rate": "0.02" }
+    ]
+  },
+  "personalDeduction": {
+    "legalRef": "Art. 50 Income Tax Act",
+    "basic": "1500000",
+    "note": "A basic deduction for the taxpayer. Further deductions for dependants are not modelled."
+  },
+  "brackets": {
+    "legalRef": "Art. 55 Income Tax Act",
+    "note": "Eight bands, in force for income received from 1 January 2023 onwards.",
+    "bands": [
+      { "upTo": "14000000", "rate": "0.06" },
+      { "upTo": "50000000", "rate": "0.15" },
+      { "upTo": "88000000", "rate": "0.24" },
+      { "upTo": "150000000", "rate": "0.35" },
+      { "upTo": "300000000", "rate": "0.38" },
+      { "upTo": "500000000", "rate": "0.40" },
+      { "upTo": "1000000000", "rate": "0.42" },
+      { "upTo": null, "rate": "0.45" }
+    ]
+  },
+  "localIncomeTax": {
+    "legalRef": "Local Tax Act art. 92",
+    "rate": "0.10",
+    "note": "Ten percent of the national income tax, charged on the tax rather than on income, so it moves with every national bracket."
+  },
+  "socialInsurance": {
+    "legalRef": "National Pension Act; National Health Insurance Act; Employment Insurance Act",
+    "pensionRate": "0.045",
+    "healthRate": "0.03545",
+    "longTermCareRateOfHealth": "0.1295",
+    "employmentRate": "0.009",
+    "note": "Employee shares of the four major insurances. Long-term care is charged as a percentage of the health insurance premium, not of salary."
+  },
+  "rounding": { "moneyDp": 0, "mode": "down" },
+  "regions": [
+    {
+      "code": "kr",
+      "name": "Republic of Korea",
+      "note": "Local income tax is a flat 10% of national tax everywhere, so there is no regional choice."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly pay in won, including any bonus in the month it is paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Income tax withheld (per month)",
+      "help": "Withholding tax deducted each month, for the year-end settlement comparison."
+    }
+  ]
+}

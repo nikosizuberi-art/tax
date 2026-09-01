@@ -1,0 +1,84 @@
+{
+  "rulesetVersion": "at-2026-0.1.0",
+  "country": "AT",
+  "year": 2026,
+  "yearLabel": "Veranlagungsjahr 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "EStG 1988 §§ 33 und 67; ASVG (Sozialversicherung); PwC Worldwide Tax Summaries, Austria",
+    "sourceUrl": "https://taxsummaries.pwc.com/austria/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 2026 brackets and the treatment of the 13th and 14th salary were read from PwC on 31 August 2026. The social security rate and ceiling, and the Verkehrsabsetzbetrag, were not given there and are carried from general knowledge."
+  },
+  "verificationTodo": [
+    "socialSecurity.employeeRate of 18.07% and the monthly Hoechstbeitragsgrundlage of EUR 6,450 were NOT confirmed by a source in this pass. Both need checking against the ASVG values for 2026.",
+    "Confirm the Verkehrsabsetzbetrag for 2026 and whether the increased or phased-out variants apply.",
+    "The 6% rate on special payments applies within the Jahressechstel. This app applies it to whatever you enter without testing that limit."
+  ],
+  "omissions": [
+    "The Jahressechstel limit on the 6% rate is not enforced, so a very large bonus is undertaxed here.",
+    "Familienbonus Plus, Alleinverdienerabsetzbetrag and the Kindermehrbetrag are not modelled.",
+    "The SV-Rueckerstattung (negative tax) for low earners is not modelled.",
+    "Only the Werbungskostenpauschale is applied; actual expenses are not."
+  ],
+  "brackets": {
+    "legalRef": "§ 33 Abs. 1 EStG 1988",
+    "note": "Seven bands. The first EUR 13,539 is free of income tax entirely.",
+    "bands": [
+      { "upTo": "13539", "rate": "0" },
+      { "upTo": "21992", "rate": "0.20" },
+      { "upTo": "36458", "rate": "0.30" },
+      { "upTo": "70365", "rate": "0.40" },
+      { "upTo": "104859", "rate": "0.48" },
+      { "upTo": "1000000", "rate": "0.50" },
+      { "upTo": null, "rate": "0.55" }
+    ]
+  },
+  "specialPayments": {
+    "legalRef": "§ 67 Abs. 1 EStG 1988",
+    "exemptAmount": "620",
+    "rate": "0.06",
+    "note": "The 13th and 14th salary are taxed apart from everything else: the first EUR 620 is free and the rest is taxed at 6%, not at your marginal rate. Social security is still due on them in full. This is the single largest reason Austrian take-home pay is higher than the headline rates suggest."
+  },
+  "socialSecurity": {
+    "legalRef": "ASVG",
+    "employeeRate": "0.1807",
+    "monthlyCeiling": "6450",
+    "note": "Employee share of pension, health, unemployment and accident insurance, applied to a monthly ceiling. Special payments have their own ceiling, which this app does not model separately."
+  },
+  "deductions": {
+    "werbungskostenPauschale": "132",
+    "verkehrsabsetzbetrag": "487",
+    "note": "The Werbungskostenpauschale is an allowance against income; the Verkehrsabsetzbetrag is a credit against the tax."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    { "code": "at", "name": "Austria", "note": "Austrian income tax has no regional component." }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Bruttogehalt (per month)",
+      "help": "Your twelve ordinary monthly salaries. Do NOT include the 13th and 14th payments here; they are taxed under a separate rule and have their own field."
+    },
+    {
+      "id": "specialPayments",
+      "kind": "annual-money",
+      "group": "income",
+      "optional": true,
+      "label": "Sonstige Bezuege (13. und 14. Gehalt)",
+      "help": "Holiday and Christmas pay. Enter the total of both. They are taxed at 6% after a EUR 620 exemption rather than at your marginal rate, so entering them in the monthly grid instead would overstate your tax badly."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Lohnsteuer einbehalten (per month)",
+      "help": "Wage tax deducted by your employer, for the annual comparison."
+    }
+  ]
+}

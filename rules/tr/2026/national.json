@@ -1,0 +1,68 @@
+{
+  "rulesetVersion": "tr-2026-0.1.0",
+  "country": "TR",
+  "year": 2026,
+  "yearLabel": "Vergi yili 2026",
+  "currency": "TRY",
+  "provenance": {
+    "source": "Gelir Vergisi Kanunu md. 103 ve gecici 91; 5510 sayili Kanun (SGK); PwC Worldwide Tax Summaries, Turkey; Alomaliye and TURMOB 2026 payroll parameters",
+    "sourceUrl": "https://taxsummaries.pwc.com/turkey/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The five 2026 employment income bands came from PwC. The SGK employee rate of 14%, unemployment 1%, the monthly ceiling of TRY 297,270 and the gross minimum wage of TRY 33,030 came from Turkish payroll summaries read on 31 August 2026."
+  },
+  "verificationTodo": [
+    "Confirm the minimum wage exemption mechanism, which exempts the income tax attributable to the minimum wage. This app applies it as an annual credit rather than month by month.",
+    "Confirm the SGK monthly ceiling of TRY 297,270, which is nine times the gross minimum wage.",
+    "The stamp duty exemption on the minimum wage is not modelled."
+  ],
+  "omissions": [
+    "Stamp duty on wages, currently 0.759%, is not modelled.",
+    "Turkish withholding is cumulative through the year, so the month in which you cross a bracket changes your net pay. This app computes the annual liability rather than reproducing the monthly cumulative withholding.",
+    "The disability allowance and private pension deductions are not modelled."
+  ],
+  "brackets": {
+    "legalRef": "GVK md. 103, employment income scale for 2026",
+    "note": "Turkey applies a separate, more generous scale to employment income than to other income.",
+    "bands": [
+      { "upTo": "190000", "rate": "0.15" },
+      { "upTo": "400000", "rate": "0.20" },
+      { "upTo": "1500000", "rate": "0.27" },
+      { "upTo": "5300000", "rate": "0.35" },
+      { "upTo": null, "rate": "0.40" }
+    ]
+  },
+  "sgk": {
+    "legalRef": "5510 sayili Sosyal Sigortalar Kanunu",
+    "employeeRate": "0.14",
+    "unemploymentRate": "0.01",
+    "monthlyCeiling": "297270",
+    "note": "The employee pays 14% social security plus 1% unemployment insurance, both on pay up to a monthly ceiling of nine times the gross minimum wage."
+  },
+  "minimumWageExemption": {
+    "legalRef": "GVK gecici md. 91",
+    "grossMonthlyMinimumWage": "33030",
+    "note": "The income tax attributable to the minimum wage is exempt for every employee, not only for those earning it. In practice it works as a credit equal to the tax that would be due on a minimum-wage salary."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    { "code": "tr", "name": "Turkiye", "note": "Turkish income tax has no regional component." }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Brut ucret (per month)",
+      "help": "Gross monthly pay. SGK is capped monthly, so a bonus month does not raise your contributions beyond the ceiling."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Kesilen gelir vergisi (per month)",
+      "help": "Income tax withheld each month, for the annual comparison. Turkish withholding is cumulative, so it rises through the year."
+    }
+  ]
+}

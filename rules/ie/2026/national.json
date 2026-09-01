@@ -1,0 +1,86 @@
+{
+  "rulesetVersion": "ie-2026-0.1.0",
+  "country": "IE",
+  "year": 2026,
+  "yearLabel": "Tax year 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "Taxes Consolidation Act 1997; Finance Act 2026; KPMG and Revenue summaries of Budget 2026; PwC Worldwide Tax Summaries, Ireland",
+    "sourceUrl": "https://kpmg.com/ie/en/insights/tax/budget-2026/tables.html",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The EUR 44,000 standard rate band came from PwC. The credits, USC bands and the PRSI increase from 1 October 2026 came from Budget 2026 summaries, read on 31 August 2026."
+  },
+  "verificationTodo": [
+    "Confirm the personal and employee credits of EUR 1,950 each for 2026.",
+    "Confirm the USC bands and the EUR 13,000 exemption threshold.",
+    "Confirm the PRSI rate change from 4.2% to 4.35% on 1 October 2026 and whether it applies to pay dates or earning periods."
+  ],
+  "omissions": [
+    "Single individuals only. The increased standard rate band for married couples and single parents is not modelled.",
+    "The reduced USC rate for medical card holders and people over 70 is not modelled.",
+    "Rent tax credit, mortgage interest relief and the home carer credit are not modelled.",
+    "The PRSI weekly credit that tapers the charge for low earners is not modelled."
+  ],
+  "incomeTax": {
+    "legalRef": "s. 15 Taxes Consolidation Act 1997",
+    "standardRateBand": "44000",
+    "standardRate": "0.20",
+    "higherRate": "0.40",
+    "note": "Only two rates, but they bite early: the 40% rate starts at EUR 44,000 for a single person."
+  },
+  "credits": {
+    "legalRef": "ss. 461 and 472 Taxes Consolidation Act 1997",
+    "personal": "1950",
+    "employee": "1950",
+    "note": "Ireland grants credits against the tax rather than allowances against income, so they are worth the same to every taxpayer regardless of rate."
+  },
+  "usc": {
+    "legalRef": "Part 18D Taxes Consolidation Act 1997",
+    "exemptionThreshold": "13000",
+    "note": "A separate charge with its own bands, levied on gross income before pension relief. Below the exemption threshold no USC is due at all - and then it is due on the whole income, not just the excess.",
+    "bands": [
+      { "upTo": "12012", "rate": "0.005" },
+      { "upTo": "28700", "rate": "0.02" },
+      { "upTo": "70044", "rate": "0.03" },
+      { "upTo": null, "rate": "0.08" }
+    ]
+  },
+  "prsi": {
+    "legalRef": "Social Welfare Consolidation Act 2005, Class A",
+    "note": "The employee rate rises on 1 October 2026, so the same monthly pay costs more in the last quarter of the year than in the first three.",
+    "monthlyRates": [
+      { "months": [1, 2, 3, 4, 5, 6, 7, 8, 9], "rate": "0.042" },
+      { "months": [10, 11, 12], "rate": "0.0435" }
+    ]
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    { "code": "ie", "name": "Ireland", "note": "Irish income tax has no regional component." }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross pay (per month)",
+      "help": "Gross monthly pay. The month matters here: the employee PRSI rate rises from 4.2% to 4.35% on 1 October 2026."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "PAYE income tax deducted (per month)",
+      "help": "Income tax only, not USC or PRSI. Used for the annual comparison."
+    },
+    {
+      "id": "pension",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Pension contributions",
+      "help": "Contributions within your age-related limit get relief against income tax, but NOT against USC or PRSI, which are charged on your pay before pension relief."
+    }
+  ]
+}

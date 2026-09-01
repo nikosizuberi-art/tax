@@ -1,0 +1,81 @@
+{
+  "rulesetVersion": "no-2026-0.1.0",
+  "country": "NO",
+  "year": 2026,
+  "yearLabel": "Inntektsaar 2026",
+  "currency": "NOK",
+  "provenance": {
+    "source": "Skatteloven; Stortingets skattevedtak for 2026; PwC Worldwide Tax Summaries, Norway (reviewed 20 January 2026); regjeringen.no skattesatser 2026",
+    "sourceUrl": "https://taxsummaries.pwc.com/norway/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 22% flat rate and the five trinnskatt steps came from PwC. The personfradrag of NOK 114,540, the minstefradrag of 46% capped at NOK 95,700 and the trygdeavgift of 7.6% came from Norwegian budget summaries read on 31 August 2026."
+  },
+  "verificationTodo": [
+    "Confirm the personfradrag, the minstefradrag maximum and the trygdeavgift rate with Skatteetaten.",
+    "Confirm that trygdeavgift is charged on gross personal income with no upper limit."
+  ],
+  "omissions": [
+    "The low-income tapering of trygdeavgift, under which the contribution may not exceed a share of income above a floor, is not modelled.",
+    "Deductions for union dues, travel to work, BSU savings and pension contributions are not modelled.",
+    "The finnmarksfradrag for residents of Northern Norway is not modelled.",
+    "Wealth tax is out of scope."
+  ],
+  "generalIncome": {
+    "legalRef": "Skatteloven kap. 5 og 6",
+    "rate": "0.22",
+    "note": "A flat 22% on alminnelig inntekt, which is income after the minimum standard deduction and the personal allowance. The progressivity comes entirely from the bracket tax charged separately on top."
+  },
+  "minstefradrag": {
+    "legalRef": "Skatteloven § 6-32",
+    "rate": "0.46",
+    "maximum": "95700",
+    "note": "A standard deduction of 46% of employment income, capped. You may claim actual expenses instead if they are higher, which this app does not model."
+  },
+  "personfradrag": {
+    "legalRef": "Stortingets skattevedtak",
+    "amount": "114540",
+    "note": "A personal allowance deducted from alminnelig inntekt before the 22% rate."
+  },
+  "trinnskatt": {
+    "legalRef": "Stortingets skattevedtak, trinnskatt",
+    "note": "Charged on gross personal income, with NO deduction for the minstefradrag or the personfradrag. That is why the Norwegian marginal rate rises faster than the 22% flat rate suggests.",
+    "tiers": [
+      { "threshold": "226100", "rate": "0.017" },
+      { "threshold": "318300", "rate": "0.04" },
+      { "threshold": "725050", "rate": "0.137" },
+      { "threshold": "980100", "rate": "0.168" },
+      { "threshold": "1467200", "rate": "0.178" }
+    ]
+  },
+  "trygdeavgift": {
+    "legalRef": "Folketrygdloven § 23-3",
+    "rate": "0.076",
+    "note": "The employee national insurance contribution, charged on gross personal income. It was reduced by 0.1 points for 2026."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "no",
+      "name": "Norway",
+      "note": "Municipal and county tax are collected inside the 22% rate on general income, so there is no separate regional choice here. Northern Norway has a special deduction that is not modelled."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Bruttolonn (per month)",
+      "help": "Gross monthly pay. Norwegian bracket tax is charged on this figure directly, with no deductions, while the 22% tax is charged on income after deductions."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Forskuddstrekk (per month)",
+      "help": "Tax withheld each month, for the annual comparison. Norway withholds nothing in one month of the year and half in another, so a monthly grid reflects that."
+    }
+  ]
+}

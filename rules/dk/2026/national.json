@@ -1,0 +1,89 @@
+{
+  "rulesetVersion": "dk-2026-0.1.0",
+  "country": "DK",
+  "year": 2026,
+  "yearLabel": "Indkomstaar 2026",
+  "currency": "DKK",
+  "provenance": {
+    "source": "Personskatteloven; Aftale om reform af personskat (2025); PwC Worldwide Tax Summaries, Denmark; Danish payroll summaries of the 2026 rates",
+    "sourceUrl": "https://taxsummaries.pwc.com/denmark/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "AM-bidrag 8%, bundskat 12.01% and the average municipal rate of 25.049% came from PwC. The 2026 personal tax reform introduced a mellemskat and a top-topskat, whose thresholds came from Danish payroll summaries. The two sources disagreed on the top tax threshold, and the reform figures were used."
+  },
+  "verificationTodo": [
+    "SOURCES CONFLICT. PwC gives a single top tax of 7.5% above DKK 845,543; the reform summaries give mellemskat 7.5% above 641,200, topskat 7.5% above 777,900 and top-topskat 5% above 2,592,700. The reform figures are used here and must be confirmed with Skattestyrelsen.",
+    "The employment allowance maximum was reported as both DKK 56,200 and DKK 63,300. The higher figure is used here.",
+    "Confirm the personfradrag of DKK 54,100 for 2026."
+  ],
+  "omissions": [
+    "The tax ceiling (skatteloft) capping the marginal rate at 60.5% including AM-bidrag is not applied.",
+    "Church tax, paid by members at roughly 0.7%, is not modelled.",
+    "The jobfradrag, the extra employment allowance for single parents and the pension contribution deduction are not modelled.",
+    "ATP contributions are not modelled."
+  ],
+  "amBidrag": {
+    "legalRef": "Arbejdsmarkedsbidragsloven",
+    "rate": "0.08",
+    "note": "Charged first, on gross pay, before any allowance. Everything that follows is computed on the 92% that remains, which is why the headline rates understate the real burden."
+  },
+  "employmentAllowance": {
+    "legalRef": "Ligningsloven § 9 J",
+    "rate": "0.1275",
+    "maximum": "63300",
+    "note": "A deduction from taxable income, raised to 12.75% by the 2026 reform. It reduces municipal tax but not bundskat."
+  },
+  "personalAllowance": {
+    "legalRef": "Personskatteloven § 10",
+    "amount": "54100",
+    "note": "Deducted from the base of both bundskat and municipal tax."
+  },
+  "stateTaxes": {
+    "legalRef": "Personskatteloven §§ 6, 6 a, 7",
+    "bundskatRate": "0.1201",
+    "note": "Bundskat is charged on personal income after the personal allowance. Mellemskat, topskat and top-topskat are charged on personal income above their thresholds, with no allowance.",
+    "tiers": [
+      { "name": "Mellemskat", "threshold": "641200", "rate": "0.075" },
+      { "name": "Topskat", "threshold": "777900", "rate": "0.075" },
+      { "name": "Top-topskat", "threshold": "2592700", "rate": "0.05" }
+    ]
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "gennemsnit",
+      "name": "Average municipality (25,049%)",
+      "municipalRate": "0.25049",
+      "note": "The national average municipal rate for 2026."
+    },
+    {
+      "code": "lav",
+      "name": "Lowest-rate municipality (22,5%)",
+      "municipalRate": "0.225",
+      "note": "The bottom of the published municipal range."
+    },
+    {
+      "code": "hoej",
+      "name": "Highest-rate municipality (27,8%)",
+      "municipalRate": "0.278",
+      "note": "The top of the published municipal range. More than five percentage points separates it from the cheapest municipality."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Bruttoloen (per month)",
+      "help": "Gross monthly pay before AM-bidrag. Danish payslips deduct the 8% labour market contribution first, so your taxable pay is already lower than this."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "A-skat traekket (per month)",
+      "help": "Income tax withheld each month, excluding AM-bidrag, for the annual comparison."
+    }
+  ]
+}

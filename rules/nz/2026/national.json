@@ -1,0 +1,84 @@
+{
+  "rulesetVersion": "nz-2026-27-0.1.0",
+  "country": "NZ",
+  "year": 2026,
+  "yearLabel": "Income year 2026-27 (1 April 2026 to 31 March 2027)",
+  "currency": "NZD",
+  "provenance": {
+    "source": "Income Tax Act 2007 schedule 1; Accident Compensation (Earners' Levy) Regulations; PwC Worldwide Tax Summaries, New Zealand; calculate.co.nz and NZTaxTools summaries of the 1 April 2026 ACC changes",
+    "sourceUrl": "https://taxsummaries.pwc.com/new-zealand/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The five income tax bands came from PwC on 31 August 2026. The ACC earners' levy of 1.75% and the NZD 156,641 maximum liable earnings, effective 1 April 2026, came from New Zealand payroll summaries rather than from ACC directly."
+  },
+  "verificationTodo": [
+    "Confirm the ACC earners' levy rate and maximum liable earnings for the 2026-27 year with ACC.",
+    "Confirm the independent earner tax credit thresholds and abatement rate.",
+    "KiwiSaver employee contributions of 3% to 10% are not modelled and reduce take-home pay materially."
+  ],
+  "omissions": [
+    "KiwiSaver employee contributions are not modelled at all.",
+    "Working for Families tax credits and the accommodation supplement are not modelled; they are benefits rather than parts of the tax computation.",
+    "Student loan repayments at 12% above the repayment threshold are not modelled.",
+    "The IETC is withdrawn where you receive a benefit, superannuation or Working for Families; this app relies on you confirming eligibility."
+  ],
+  "brackets": {
+    "legalRef": "Schedule 1, Income Tax Act 2007",
+    "note": "Five bands, in force since 31 July 2024. There is no tax-free threshold: the first dollar is taxed at 10.5%.",
+    "bands": [
+      { "upTo": "15600", "rate": "0.105" },
+      { "upTo": "53500", "rate": "0.175" },
+      { "upTo": "78100", "rate": "0.30" },
+      { "upTo": "180000", "rate": "0.33" },
+      { "upTo": null, "rate": "0.39" }
+    ]
+  },
+  "accLevy": {
+    "legalRef": "Accident Compensation Act 2001",
+    "rate": "0.0175",
+    "maximumLiableEarnings": "156641",
+    "note": "A compulsory levy on earnings, collected through PAYE alongside income tax but not itself income tax. It stops at the maximum liable earnings."
+  },
+  "ietc": {
+    "legalRef": "s. LC 13, Income Tax Act 2007",
+    "amount": "520",
+    "lowerThreshold": "24000",
+    "fullCreditCeiling": "66000",
+    "abatementRate": "0.13",
+    "upperThreshold": "70000",
+    "note": "A credit for earners on modest incomes who receive no benefit or Working for Families payment. It is withdrawn at 13 cents in the dollar above NZD 66,000."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "nz",
+      "name": "New Zealand",
+      "note": "New Zealand income tax has no regional component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross pay (per month)",
+      "help": "Gross monthly pay before PAYE. There is no tax-free threshold in New Zealand, so the first dollar is taxed."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "PAYE deducted (per month)",
+      "help": "Income tax deducted at source. Used for the annual comparison."
+    },
+    {
+      "id": "ietcEligible",
+      "kind": "bool",
+      "group": "personal",
+      "optional": true,
+      "label": "I qualify for the independent earner tax credit",
+      "help": "You must earn between NZD 24,000 and NZD 70,000 and receive no benefit, no New Zealand superannuation and no Working for Families payments. Tick only if all of that is true."
+    }
+  ]
+}

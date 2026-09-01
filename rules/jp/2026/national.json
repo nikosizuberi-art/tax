@@ -1,0 +1,99 @@
+{
+  "rulesetVersion": "jp-2026-0.1.0",
+  "country": "JP",
+  "year": 2026,
+  "yearLabel": "Calendar year 2026",
+  "currency": "JPY",
+  "provenance": {
+    "source": "Income Tax Act (Shotokuzei Ho) art. 28 and 89; Local Tax Act; 2025 and 2026 tax reforms; PwC Worldwide Tax Summaries, Japan (reviewed 7 August 2026); BDO and practitioner summaries of the 2026 reform",
+    "sourceUrl": "https://taxsummaries.pwc.com/japan/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The national brackets with their quick deductions, the 10% inhabitant's tax and the 2.1% reconstruction surtax came from PwC. The employment income deduction formula and the JPY 620,000 basic deduction came from practitioner summaries of the 2026 reform."
+  },
+  "verificationTodo": [
+    "The 2026 reform adds a special supplement to the basic deduction that varies with income, reportedly up to JPY 420,000. Only the JPY 620,000 statutory base is applied here, so tax is OVERSTATED for many taxpayers.",
+    "Social insurance rates are approximations: health insurance varies by prefecture and by insurer, and none of the standard monthly remuneration caps are applied.",
+    "Inhabitant's tax uses slightly smaller deductions than national tax. This app uses the same taxable income for both."
+  ],
+  "omissions": [
+    "The income-dependent supplement to the basic deduction is not modelled.",
+    "Spouse, dependant and insurance premium deductions are not modelled.",
+    "The standard monthly remuneration ceilings on health and pension insurance are not applied, so contributions are overstated for high earners.",
+    "The forest environmental tax of JPY 1,000 is not modelled.",
+    "The non-taxable threshold for inhabitant's tax varies by municipality. This app charges inhabitant's tax whenever there is taxable income at all, which overstates it slightly for very low earners."
+  ],
+  "employmentIncomeDeduction": {
+    "legalRef": "Art. 28 Income Tax Act",
+    "note": "A statutory deduction that stands in for employment expenses. It is a piecewise formula, not a flat allowance, and it stops growing entirely above JPY 8,500,000.",
+    "minimum": "550000",
+    "tiers": [
+      { "upTo": "1800000", "base": "0", "from": "0", "rate": "0.40" },
+      { "upTo": "3600000", "base": "720000", "from": "1800000", "rate": "0.30" },
+      { "upTo": "6600000", "base": "1260000", "from": "3600000", "rate": "0.20" },
+      { "upTo": "8500000", "base": "1740000", "from": "6600000", "rate": "0.10" },
+      { "upTo": null, "base": "1950000", "from": "8500000", "rate": "0" }
+    ]
+  },
+  "basicDeduction": {
+    "legalRef": "Art. 86 Income Tax Act",
+    "amount": "620000",
+    "note": "Raised to JPY 620,000 for 2026. A further income-dependent supplement applies for 2026 and 2027 which this app does not model."
+  },
+  "nationalTax": {
+    "legalRef": "Art. 89 Income Tax Act",
+    "note": "Japan states each band as a rate and a quick deduction subtracted afterwards, which is how a Japanese tax table is printed.",
+    "bands": [
+      { "upTo": "1950000", "rate": "0.05", "deduct": "0" },
+      { "upTo": "3300000", "rate": "0.10", "deduct": "97500" },
+      { "upTo": "6950000", "rate": "0.20", "deduct": "427500" },
+      { "upTo": "9000000", "rate": "0.23", "deduct": "636000" },
+      { "upTo": "18000000", "rate": "0.33", "deduct": "1536000" },
+      { "upTo": "40000000", "rate": "0.40", "deduct": "2796000" },
+      { "upTo": null, "rate": "0.45", "deduct": "4796000" }
+    ]
+  },
+  "reconstructionSurtax": {
+    "legalRef": "Special Measures for Reconstruction Funding Act",
+    "rate": "0.021",
+    "note": "2.1% of the national income tax, in force since 2013. It is charged on the tax, not on income."
+  },
+  "inhabitantsTax": {
+    "legalRef": "Local Tax Act",
+    "rate": "0.10",
+    "perCapita": "5000",
+    "note": "A flat 10% levied by the prefecture and municipality together, plus a small per capita charge. It is assessed on the previous year's income, so a new arrival pays none in their first year."
+  },
+  "socialInsurance": {
+    "legalRef": "Health Insurance Act; Employees' Pension Insurance Act; Employment Insurance Act",
+    "healthRate": "0.04985",
+    "pensionRate": "0.0915",
+    "employmentRate": "0.006",
+    "note": "Employee shares. Health insurance varies by prefecture and insurer, and the standard remuneration ceilings are not applied here."
+  },
+  "rounding": { "moneyDp": 0, "mode": "down" },
+  "regions": [
+    {
+      "code": "jp",
+      "name": "Japan",
+      "note": "Inhabitant's tax is 10% almost everywhere, so prefecture is not offered as a choice."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly pay in yen. Add any bonus to the month it is paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Income tax withheld (per month)",
+      "help": "National income tax withheld, for the year-end adjustment comparison."
+    }
+  ]
+}

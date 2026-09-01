@@ -1,0 +1,66 @@
+{
+  "rulesetVersion": "sa-2026-0.1.0",
+  "country": "SA",
+  "year": 2026,
+  "yearLabel": "Calendar year 2026",
+  "currency": "SAR",
+  "provenance": {
+    "source": "Saudi Social Insurance Law (GOSI); PwC Worldwide Tax Summaries, Saudi Arabia - Individual - Other taxes",
+    "sourceUrl": "https://taxsummaries.pwc.com/saudi-arabia/individual/other-taxes",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "Confirmed on 31 August 2026 that Saudi Arabia levies no income tax on employment income, and that GOSI applies to Saudi nationals at 9.75% employee share with a SAR 45,000 monthly ceiling. Non-Saudi employees make no contribution; their employer pays 2% occupational hazard cover."
+  },
+  "verificationTodo": [
+    "Confirm the contribution base definition. GOSI is charged on basic salary plus housing, not on total remuneration, so entering total pay overstates the contribution.",
+    "Confirm the treatment of GCC nationals working in Saudi Arabia, who contribute under their home state scheme."
+  ],
+  "omissions": [
+    "GOSI is charged on basic salary plus housing allowance. This app applies it to whatever you enter as monthly pay, which will overstate it if you enter total remuneration.",
+    "End-of-service benefits are a contractual entitlement, not a tax, and are not modelled.",
+    "The new pension rules for employees who joined the scheme after July 2024 phase in different rates and are not modelled."
+  ],
+  "personalIncomeTax": {
+    "levied": false,
+    "legalRef": "There is no personal income tax on employment income in Saudi Arabia.",
+    "note": "Saudi Arabia levies no income tax on wages, for nationals or expatriates. Zakat and corporate income tax apply to businesses, not to employees."
+  },
+  "socialInsurance": {
+    "legalRef": "Social Insurance Law, GOSI",
+    "appliesTo": "Saudi nationals only",
+    "employeeRate": "0.0975",
+    "monthlyCeiling": "45000",
+    "employerRate": "0.1175",
+    "nonSaudiEmployerRate": "0.02",
+    "note": "The Saudi employee pays 9% pension plus 0.75% SANED unemployment cover, on basic salary plus housing, up to SAR 45,000 a month. A non-Saudi employee pays nothing; the employer alone pays 2% for occupational hazard cover."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "sa",
+      "name": "Saudi Arabia",
+      "note": "No regional variation in either tax or contributions."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Basic salary plus housing (per month)",
+      "help": "GOSI is charged on basic salary plus housing allowance, not on total remuneration. Enter that figure rather than your full package, or the contribution shown will be too high."
+    },
+    {
+      "id": "nationality",
+      "kind": "enum",
+      "group": "personal",
+      "label": "Status",
+      "options": [
+        { "value": "saudi", "label": "Saudi national" },
+        { "value": "expatriate", "label": "Expatriate employee" }
+      ],
+      "default": "expatriate",
+      "help": "GOSI social insurance is compulsory for Saudi nationals only. An expatriate employee pays neither income tax nor social insurance, so gross pay is take-home pay."
+    }
+  ]
+}

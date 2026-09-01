@@ -1,0 +1,84 @@
+{
+  "rulesetVersion": "br-2026-0.1.0",
+  "country": "BR",
+  "year": 2026,
+  "yearLabel": "Ano-calendario 2026",
+  "currency": "BRL",
+  "provenance": {
+    "source": "Lei 7.713/1988 e Lei 15.270/2025 (Reforma da Renda); tabela INSS 2026; tabela IRRF mensal; PwC Worldwide Tax Summaries, Brazil",
+    "sourceUrl": "https://www.contabilizei.com.br/contabilidade-online/tabela-inss/",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 2026 INSS table was read on 31 August 2026 and reconciles exactly: 8.475,55 x 14% - 198,49 = 988,09, the published maximum. The R$ 5.000 exemption and the redutor formula came from Brazilian summaries of the Reforma da Renda. PwC's own page still showed a 2024 table and was not used."
+  },
+  "verificationTodo": [
+    "The monthly IRRF table bands and deduction amounts were NOT confirmed for 2026 in this pass and need checking against the Receita Federal.",
+    "Confirm the redutor formula 978,62 - 0,133145 x salario and that it zeroes exactly at R$ 7.350.",
+    "Confirm the simplified monthly discount of R$ 607,20."
+  ],
+  "omissions": [
+    "Legal deductions for dependants, alimony, private pension and health plans are not modelled; the simplified discount is applied instead.",
+    "The 13th salary is taxed separately and exclusively at source in Brazil, which this app does not model.",
+    "The annual adjustment declaration, which can change the result, is not modelled; this sums the monthly withholding basis."
+  ],
+  "inss": {
+    "legalRef": "Lei 8.212/1991, tabela 2026",
+    "note": "Progressive by band, applied to the whole salary with a deduction amount. It stops at the ceiling, so the maximum contribution is R$ 988,09 a month no matter how much you earn.",
+    "ceiling": "8475.55",
+    "bands": [
+      { "upTo": "1621.00", "rate": "0.075", "deduct": "0" },
+      { "upTo": "2902.84", "rate": "0.09", "deduct": "24.32" },
+      { "upTo": "4354.27", "rate": "0.12", "deduct": "111.40" },
+      { "upTo": "8475.55", "rate": "0.14", "deduct": "198.49" }
+    ]
+  },
+  "irrfMonthly": {
+    "legalRef": "Tabela progressiva mensal do IRRF",
+    "note": "Brazil withholds monthly on a monthly table, so the tax is genuinely a sum of twelve separate computations rather than one annual calculation.",
+    "bands": [
+      { "upTo": "2428.80", "rate": "0", "deduct": "0" },
+      { "upTo": "2826.65", "rate": "0.075", "deduct": "182.16" },
+      { "upTo": "3751.05", "rate": "0.15", "deduct": "394.16" },
+      { "upTo": "4664.68", "rate": "0.225", "deduct": "675.49" },
+      { "upTo": null, "rate": "0.275", "deduct": "908.73" }
+    ]
+  },
+  "simplifiedDiscount": {
+    "legalRef": "Lei 13.149/2015, desconto simplificado mensal",
+    "monthlyAmount": "607.20",
+    "note": "A flat monthly discount that replaces all legal deductions. You take it or your actual deductions, never both."
+  },
+  "reformaDaRenda": {
+    "legalRef": "Lei 15.270/2025",
+    "fullExemptionMonthly": "5000",
+    "phaseOutCeiling": "7350",
+    "redutorBase": "978.62",
+    "redutorRate": "0.133145",
+    "note": "From 2026 monthly pay up to R$ 5.000 bears no income tax at all, and between R$ 5.000 and R$ 7.350 a redutor reduces the tax on a sliding scale that reaches zero exactly at the ceiling."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "br",
+      "name": "Brasil",
+      "note": "Brazilian income tax on wages has no state or municipal component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Salario bruto (per month)",
+      "help": "Gross monthly salary. Brazil computes INSS and income tax on each month separately, so the monthly figures matter here more than in almost any other country on this list."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "IRRF retido (per month)",
+      "help": "Income tax withheld each month, for the annual comparison."
+    }
+  ]
+}

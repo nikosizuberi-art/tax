@@ -1,0 +1,107 @@
+{
+  "rulesetVersion": "it-2026-0.1.0",
+  "country": "IT",
+  "year": 2026,
+  "yearLabel": "Periodo d'imposta 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "TUIR artt. 11, 13 e 51; PwC Worldwide Tax Summaries, Italy (reviewed 23 July 2026); Fiscomania and Centro Fiscale summaries of the 2026 detrazione da lavoro dipendente",
+    "sourceUrl": "https://taxsummaries.pwc.com/italy/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The three IRPEF brackets and the surcharge ranges came from PwC on 31 August 2026. The employment income credit formula came from Italian practitioner summaries, not from the Agenzia delle Entrate."
+  },
+  "verificationTodo": [
+    "Confirm the detrazione da lavoro dipendente amounts and formulas for 2026 against the Agenzia delle Entrate.",
+    "The INPS employee rate of 9.19% is the standard rate for a private-sector employee. Confirm it for the actual sector, and confirm the higher rate that applies above the annual first-band ceiling.",
+    "Regional and municipal surcharge rates are modelled as flat rates. Several regions apply progressive surcharge bands, which this app does not."
+  ],
+  "omissions": [
+    "The trattamento integrativo is modelled only for incomes up to EUR 15,000. The conditional entitlement between 15,000 and 28,000 depends on the taxpayer's other credits and is not modelled.",
+    "Detrazioni for dependent family members, medical expenses and building works are not modelled.",
+    "The annual INPS ceiling that raises the rate for high earners is not applied.",
+    "The bonus for employees under the 2025-2026 labour measures is not modelled."
+  ],
+  "irpef": {
+    "legalRef": "Art. 11 TUIR",
+    "note": "Three bands since the 2024 reform.",
+    "bands": [
+      { "upTo": "28000", "rate": "0.23" },
+      { "upTo": "50000", "rate": "0.33" },
+      { "upTo": null, "rate": "0.43" }
+    ]
+  },
+  "inps": {
+    "legalRef": "Legge 335/1995",
+    "employeeRate": "0.0919",
+    "note": "Standard employee share for a private-sector worker. The employer pays roughly 30% more on top."
+  },
+  "detrazioneLavoro": {
+    "legalRef": "Art. 13 TUIR",
+    "lowIncomeLimit": "15000",
+    "lowIncomeAmount": "1955",
+    "midLimit": "28000",
+    "midBase": "1910",
+    "midExtra": "1190",
+    "midRange": "13000",
+    "highLimit": "50000",
+    "highBase": "1910",
+    "highRange": "22000",
+    "note": "A credit against the tax, not an allowance against income, and it tapers to nothing at EUR 50,000. It is what creates Italy's no-tax area at the bottom."
+  },
+  "trattamentoIntegrativo": {
+    "legalRef": "DL 3/2020 art. 1",
+    "incomeLimit": "15000",
+    "amount": "1200",
+    "note": "A payment, not a credit: it is paid even where it exceeds the tax due, provided the gross tax exceeds the employment credit."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "lazio-roma",
+      "name": "Lazio (Roma)",
+      "regionalRate": "0.0333",
+      "municipalRate": "0.009",
+      "note": "Lazio applies one of the highest regional surcharges, and Rome charges the maximum municipal rate."
+    },
+    {
+      "code": "lombardia-milano",
+      "name": "Lombardia (Milano)",
+      "regionalRate": "0.0123",
+      "municipalRate": "0.008",
+      "note": "Lombardia applies the minimum regional surcharge."
+    },
+    {
+      "code": "campania-napoli",
+      "name": "Campania (Napoli)",
+      "regionalRate": "0.0333",
+      "municipalRate": "0.008",
+      "note": "Campania applies the maximum regional surcharge."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Retribuzione lorda (per month)",
+      "help": "Gross monthly pay. If you receive a tredicesima or quattordicesima, add it to the month it is paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "IRPEF trattenuta (per month)",
+      "help": "Income tax withheld by your employer each month, for the annual comparison."
+    },
+    {
+      "id": "previdenzaComplementare",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Contributi a previdenza complementare",
+      "help": "Contributions to a supplementary pension fund, deductible up to EUR 5,164.57 a year. This app does not enforce that ceiling."
+    }
+  ]
+}

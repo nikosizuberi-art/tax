@@ -1,0 +1,88 @@
+{
+  "rulesetVersion": "za-2026-27-0.1.0",
+  "country": "ZA",
+  "year": 2026,
+  "yearLabel": "Year of assessment 1 March 2026 to 28 February 2027",
+  "currency": "ZAR",
+  "provenance": {
+    "source": "Income Tax Act 58 of 1962; Unemployment Insurance Contributions Act 4 of 2002; Budget 2026 rate tables; PwC Worldwide Tax Summaries, South Africa",
+    "sourceUrl": "https://taxsummaries.pwc.com/south-africa/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The seven brackets came from PwC on 31 August 2026. The rebates, thresholds and UIF ceiling came from Budget 2026 summaries. The primary rebate of ZAR 17,820 is exactly 18% of the ZAR 99,000 threshold, which is a useful internal consistency check and it holds."
+  },
+  "verificationTodo": [
+    "Confirm the 2026/27 rebates and the UIF monthly ceiling of ZAR 17,712 with SARS.",
+    "Confirm the retirement fund contribution deduction limit of 27.5% capped at ZAR 350,000."
+  ],
+  "omissions": [
+    "The medical scheme fees tax credit and additional medical expenses credit are not modelled.",
+    "Travel allowances, company car fringe benefits and the associated deductions are not modelled.",
+    "Only the primary rebate is applied; the secondary and tertiary age rebates are not."
+  ],
+  "brackets": {
+    "legalRef": "Schedule 1, Income Tax Act 58 of 1962",
+    "note": "Seven brackets, starting at 18% from the first rand. There is no tax-free band: the tax-free effect comes from the rebate.",
+    "bands": [
+      { "upTo": "245100", "rate": "0.18" },
+      { "upTo": "383100", "rate": "0.26" },
+      { "upTo": "530200", "rate": "0.31" },
+      { "upTo": "695800", "rate": "0.36" },
+      { "upTo": "887000", "rate": "0.39" },
+      { "upTo": "1878600", "rate": "0.41" },
+      { "upTo": null, "rate": "0.45" }
+    ]
+  },
+  "rebates": {
+    "legalRef": "s. 6, Income Tax Act",
+    "primary": "17820",
+    "secondary65": "9765",
+    "tertiary75": "3249",
+    "note": "A rebate is subtracted from the tax, not from income. The primary rebate of 17,820 is exactly 18% of 99,000, which is why 99,000 is the tax threshold."
+  },
+  "uif": {
+    "legalRef": "Unemployment Insurance Contributions Act 4 of 2002",
+    "employeeRate": "0.01",
+    "monthlyCeiling": "17712",
+    "note": "One percent of remuneration up to a monthly ceiling, matched by the employer. The maximum an employee pays is ZAR 177.12 a month."
+  },
+  "retirementDeduction": {
+    "legalRef": "s. 11F, Income Tax Act",
+    "percentOfIncome": "0.275",
+    "annualCap": "350000",
+    "note": "Contributions to a pension, provident or retirement annuity fund are deductible up to 27.5% of the greater of remuneration and taxable income, capped at ZAR 350,000 a year."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "za",
+      "name": "South Africa",
+      "note": "South African income tax has no provincial component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross remuneration (per month)",
+      "help": "Gross monthly pay before PAYE. UIF is capped monthly, so a bonus month does not increase your UIF."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "PAYE deducted (per month)",
+      "help": "Employees' tax withheld each month, for the annual comparison."
+    },
+    {
+      "id": "retirementContributions",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Retirement fund contributions",
+      "help": "Pension, provident and retirement annuity contributions. Deductible up to 27.5% of your remuneration, and never more than ZAR 350,000 a year."
+    }
+  ]
+}

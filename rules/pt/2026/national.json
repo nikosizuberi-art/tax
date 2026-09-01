@@ -1,0 +1,92 @@
+{
+  "rulesetVersion": "pt-2026-0.1.0",
+  "country": "PT",
+  "year": 2026,
+  "yearLabel": "Ano fiscal 2026",
+  "currency": "EUR",
+  "provenance": {
+    "source": "Codigo do IRS artt. 25, 68 e 68-A; Orcamento do Estado 2026; PwC Worldwide Tax Summaries, Portugal; PwC Portugal Guia Fiscal 2026 (seguranca social)",
+    "sourceUrl": "https://taxsummaries.pwc.com/portugal/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The nine 2026 brackets with their parcela a abater came from PwC on 31 August 2026, as did the solidarity surcharge. The 11% employee social security rate came from PwC Portugal's Guia Fiscal 2026."
+  },
+  "verificationTodo": [
+    "specificDeduction.floor is derived from 8.54 x IAS and has not been confirmed for 2026. It matters for everyone earning under about EUR 40,000.",
+    "Confirm the minimo de existencia for 2026, which this app does not apply at all.",
+    "Confirm the solidarity surcharge bands."
+  ],
+  "omissions": [
+    "The minimo de existencia, which exempts low incomes entirely, is not modelled, so low incomes are overstated.",
+    "IRS Jovem, the reduced regime for young workers, is not modelled.",
+    "Deducoes a coleta for health, education, housing and general family expenses are not modelled.",
+    "Only single taxpayers without dependants are modelled; joint taxation is out of scope."
+  ],
+  "scale": {
+    "legalRef": "Art. 68 CIRS",
+    "note": "Portugal states each band as a rate plus a parcela a abater, a fixed amount subtracted from rate x income. That is arithmetically the same as marginal bands, but it is how the statute is written and how a Portuguese payslip explains it.",
+    "bands": [
+      { "upTo": "8342", "rate": "0.125", "deduct": "0" },
+      { "upTo": "12587", "rate": "0.157", "deduct": "266.94" },
+      { "upTo": "17838", "rate": "0.212", "deduct": "959.26" },
+      { "upTo": "23089", "rate": "0.241", "deduct": "1476.45" },
+      { "upTo": "29397", "rate": "0.311", "deduct": "3092.77" },
+      { "upTo": "43090", "rate": "0.349", "deduct": "4209.94" },
+      { "upTo": "46566", "rate": "0.431", "deduct": "7743.27" },
+      { "upTo": "86634", "rate": "0.446", "deduct": "8441.48" },
+      { "upTo": null, "rate": "0.48", "deduct": "11387.17" }
+    ]
+  },
+  "specificDeduction": {
+    "legalRef": "Art. 25 CIRS",
+    "floor": "4500",
+    "note": "Category A income gets a specific deduction equal to the higher of a fixed floor and your actual social security contributions, so most employees deduct the floor."
+  },
+  "socialSecurity": {
+    "legalRef": "Codigo Contributivo",
+    "employeeRate": "0.11",
+    "note": "A flat 11% with no ceiling. The employer pays a further 23.75%."
+  },
+  "solidarity": {
+    "legalRef": "Art. 68-A CIRS",
+    "note": "An additional rate on high incomes, charged on the excess over each threshold.",
+    "bands": [
+      { "upTo": "80000", "rate": "0" },
+      { "upTo": "250000", "rate": "0.025" },
+      { "upTo": null, "rate": "0.05" }
+    ]
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "continente",
+      "name": "Portugal continental",
+      "note": "The Azores and Madeira apply reduced rates that this version does not model."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Remuneracao bruta (per month)",
+      "help": "Gross monthly pay. Add the subsidio de ferias and subsidio de Natal to the months in which they are paid."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Retencao na fonte de IRS (per month)",
+      "help": "IRS withheld each month, for the annual comparison."
+    },
+    {
+      "id": "ppr",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Contribuicoes para PPR",
+      "help": "Retirement savings plan contributions. In Portugal these give a credit against the tax rather than a deduction from income; this app treats the amount you enter as a credit at 20%, capped at EUR 400."
+    }
+  ]
+}

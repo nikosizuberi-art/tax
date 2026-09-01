@@ -1,0 +1,84 @@
+{
+  "rulesetVersion": "cn-2026-0.1.0",
+  "country": "CN",
+  "year": 2026,
+  "yearLabel": "Calendar year 2026",
+  "currency": "CNY",
+  "provenance": {
+    "source": "Individual Income Tax Law of the PRC (2018 revision) arts. 3 and 6; State Taxation Administration annual comprehensive income rate table; PwC Worldwide Tax Summaries, China (reviewed 22 July 2026)",
+    "sourceUrl": "https://taxsummaries.pwc.com/peoples-republic-of-china/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "PwC confirmed the seven-band structure from 3% to 45% with quick deductions on 31 August 2026 but did not print the thresholds. The thresholds and quick deductions here are the standard published table and were corroborated by a search, not by the State Taxation Administration directly."
+  },
+  "verificationTodo": [
+    "Confirm the seven thresholds and their quick deductions against the State Taxation Administration table.",
+    "Confirm the standard basic deduction of CNY 60,000 a year.",
+    "Social insurance and housing fund rates and bases vary by city and are not modelled at all."
+  ],
+  "omissions": [
+    "Social insurance and the housing provident fund are city-specific and are not computed. Enter your own annual figure to have them deducted.",
+    "The preferential treatment of annual one-off bonuses is not modelled.",
+    "Expatriate allowances for housing, schooling and home leave are not modelled.",
+    "The cumulative withholding method, under which your monthly net pay falls through the year as you climb the annual brackets, is not reproduced; this computes the annual liability."
+  ],
+  "basicDeduction": {
+    "legalRef": "Art. 6 IIT Law",
+    "amount": "60000",
+    "note": "A flat CNY 60,000 a year, the same for everyone, taken before any other deduction."
+  },
+  "brackets": {
+    "legalRef": "Annual comprehensive income rate table, IIT Law",
+    "note": "China prints this table as a rate plus a quick deduction, which is how a Chinese payroll system computes it.",
+    "bands": [
+      { "upTo": "36000", "rate": "0.03", "deduct": "0" },
+      { "upTo": "144000", "rate": "0.10", "deduct": "2520" },
+      { "upTo": "300000", "rate": "0.20", "deduct": "16920" },
+      { "upTo": "420000", "rate": "0.25", "deduct": "31920" },
+      { "upTo": "660000", "rate": "0.30", "deduct": "52920" },
+      { "upTo": "960000", "rate": "0.35", "deduct": "85920" },
+      { "upTo": null, "rate": "0.45", "deduct": "181920" }
+    ]
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "cn",
+      "name": "China",
+      "note": "IIT rates are national. Social insurance and the housing fund vary by city, and this app does not compute them."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross salary (per month)",
+      "help": "Gross monthly pay. Chinese withholding is cumulative, so your net pay falls through the year as your cumulative income climbs the brackets, even on an unchanged salary."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "IIT withheld (per month)",
+      "help": "Tax withheld each month, for the annual reconciliation comparison."
+    },
+    {
+      "id": "socialInsurance",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Social insurance and housing fund paid",
+      "help": "Your own annual contributions. Rates and bases are set city by city, so this app cannot compute them; take the figure from your payslips."
+    },
+    {
+      "id": "specialDeductions",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Special additional deductions",
+      "help": "Children's education, continuing education, serious illness, mortgage interest or rent, elderly support and infant care. Each has its own monthly standard amount; enter the annual total you qualify for."
+    }
+  ]
+}

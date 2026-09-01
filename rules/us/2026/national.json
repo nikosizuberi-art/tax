@@ -1,0 +1,158 @@
+{
+  "rulesetVersion": "us-2026-0.1.0",
+  "country": "US",
+  "year": 2026,
+  "yearLabel": "Tax year 2026",
+  "currency": "USD",
+  "provenance": {
+    "source": "IRC s. 1 and s. 63; IRS Rev. Proc. 2025-32 (2026 inflation adjustments); Tax Foundation 2026 federal and state bracket tables; PwC Worldwide Tax Summaries, United States",
+    "sourceUrl": "https://taxfoundation.org/data/all/federal/2026-tax-brackets/",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "2026 federal brackets and the USD 16,100 standard deduction were read from the Tax Foundation's summary of Rev. Proc. 2025-32 on 31 August 2026. State brackets came from the Tax Foundation 2026 state table. FICA figures came from PwC and are 2025 values."
+  },
+  "verificationTodo": [
+    "socialSecurity.wageBase is the 2025 figure of USD 176,100 carried forward. Confirm the 2026 Social Security wage base with the SSA before relying on any high-income result.",
+    "Confirm the 2026 state brackets, standard deductions and exemptions against each state revenue department.",
+    "Single filers only. Confirm nothing in Rev. Proc. 2025-32 changes the single-filer figures used here."
+  ],
+  "omissions": [
+    "Only the single filing status is modelled. Married filing jointly, head of household and married filing separately are out of scope, and they change the answer substantially.",
+    "Itemised deductions, the SALT deduction cap, the child tax credit, the earned income tax credit and the qualified business income deduction are not modelled.",
+    "The alternative minimum tax, the net investment income tax and local city income taxes (including New York City) are not modelled.",
+    "State treatment of retirement contributions varies and is not modelled separately from the federal treatment."
+  ],
+  "federalBrackets": {
+    "legalRef": "IRC s. 1(j), indexed under s. 1(f)",
+    "note": "Single filer. The 10% and 12% bands received a larger inflation adjustment for 2026 than the bands above them.",
+    "bands": [
+      { "upTo": "12400", "rate": "0.10" },
+      { "upTo": "50400", "rate": "0.12" },
+      { "upTo": "105700", "rate": "0.22" },
+      { "upTo": "201775", "rate": "0.24" },
+      { "upTo": "256225", "rate": "0.32" },
+      { "upTo": "640600", "rate": "0.35" },
+      { "upTo": null, "rate": "0.37" }
+    ]
+  },
+  "standardDeduction": {
+    "legalRef": "IRC s. 63(c)",
+    "amount": "16100",
+    "note": "Single filer. Taken instead of itemising; this app always takes the standard deduction."
+  },
+  "socialSecurity": {
+    "legalRef": "FICA, IRC s. 3101",
+    "oasdiRate": "0.062",
+    "wageBase": "176100",
+    "medicareRate": "0.0145",
+    "additionalMedicareRate": "0.009",
+    "additionalMedicareThreshold": "200000",
+    "note": "Social Security stops at the wage base; Medicare never does. The extra 0.9% Medicare tax above the threshold is charged on the employee alone, with no employer match."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "ca",
+      "name": "California",
+      "kind": "progressive",
+      "standardDeduction": "5540",
+      "exemptionCredit": "153",
+      "scale": {
+        "legalRef": "California Revenue and Taxation Code s. 17041",
+        "note": "Nine brackets and the highest top rate of any state, including the 1% mental health services surcharge above USD 1,000,000.",
+        "bands": [
+          { "upTo": "11079", "rate": "0.01" },
+          { "upTo": "26264", "rate": "0.02" },
+          { "upTo": "41452", "rate": "0.04" },
+          { "upTo": "57542", "rate": "0.06" },
+          { "upTo": "72724", "rate": "0.08" },
+          { "upTo": "371479", "rate": "0.093" },
+          { "upTo": "445771", "rate": "0.103" },
+          { "upTo": "742953", "rate": "0.113" },
+          { "upTo": "1000000", "rate": "0.123" },
+          { "upTo": null, "rate": "0.133" }
+        ]
+      }
+    },
+    {
+      "code": "ny",
+      "name": "New York State",
+      "kind": "progressive",
+      "standardDeduction": "8000",
+      "exemptionCredit": "0",
+      "scale": {
+        "legalRef": "New York Tax Law s. 601",
+        "note": "New York City residents pay a further city income tax on top of this, which is not modelled.",
+        "bands": [
+          { "upTo": "8500", "rate": "0.039" },
+          { "upTo": "11700", "rate": "0.044" },
+          { "upTo": "13900", "rate": "0.0515" },
+          { "upTo": "80650", "rate": "0.054" },
+          { "upTo": "215400", "rate": "0.059" },
+          { "upTo": "1077550", "rate": "0.0685" },
+          { "upTo": "5000000", "rate": "0.0965" },
+          { "upTo": "25000000", "rate": "0.103" },
+          { "upTo": null, "rate": "0.109" }
+        ]
+      }
+    },
+    {
+      "code": "il",
+      "name": "Illinois",
+      "kind": "flat",
+      "standardDeduction": "0",
+      "personalExemption": "2925",
+      "exemptionCredit": "0",
+      "scale": {
+        "legalRef": "35 ILCS 5/201",
+        "note": "A single flat rate, constitutionally required. Illinois grants a personal exemption rather than a standard deduction.",
+        "bands": [{ "upTo": null, "rate": "0.0495" }]
+      }
+    },
+    {
+      "code": "tx",
+      "name": "Texas",
+      "kind": "none",
+      "standardDeduction": "0",
+      "exemptionCredit": "0",
+      "scale": {
+        "legalRef": "Texas Constitution art. VIII s. 24",
+        "note": "Texas levies no individual income tax at all. Only the federal computation applies.",
+        "bands": [{ "upTo": null, "rate": "0" }]
+      }
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Gross wages (per month)",
+      "help": "Gross pay before deductions, month by month. Social Security tax stops once your wages pass the annual wage base, so the month you cross it changes your paycheck."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Income tax withheld (per month)",
+      "help": "Federal plus state income tax withheld from each paycheck, not FICA. Used only for the refund comparison."
+    },
+    {
+      "id": "pretax401k",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Traditional 401(k) or 403(b) contributions",
+      "help": "Pre-tax contributions reduce your taxable income but NOT your Social Security and Medicare wages. A Roth contribution reduces neither, so do not enter one here."
+    },
+    {
+      "id": "hsa",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Health savings account contributions",
+      "help": "Contributions made through payroll reduce taxable income and, unlike a 401(k), also reduce Social Security and Medicare wages. This app applies the income tax effect only."
+    }
+  ]
+}

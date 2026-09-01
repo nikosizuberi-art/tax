@@ -1,0 +1,68 @@
+{
+  "rulesetVersion": "cz-2026-0.1.0",
+  "country": "CZ",
+  "year": 2026,
+  "yearLabel": "Zdanovaci obdobi 2026",
+  "currency": "CZK",
+  "provenance": {
+    "source": "Zakon c. 586/1992 Sb. o danich z prijmu §§ 16 a 35ba; PwC Worldwide Tax Summaries, Czech Republic (reviewed 27 July 2026)",
+    "sourceUrl": "https://taxsummaries.pwc.com/czech-republic/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 15% and 23% rates and the CZK 1,762,812 threshold (36 x the average monthly wage) came from PwC on 31 August 2026. The taxpayer credit and the contribution rates were not given there."
+  },
+  "verificationTodo": [
+    "The basic taxpayer credit of CZK 30,840 was NOT confirmed by a source in this pass and drives the whole result at low incomes.",
+    "Employee social security of 7.1% and health insurance of 4.5% were not confirmed, nor was the social security cap of 48 x the average monthly wage.",
+    "Confirm whether health insurance remains uncapped."
+  ],
+  "omissions": [
+    "Credits for a spouse, children and disability are not modelled.",
+    "The minimum health insurance assessment base for low earners is not applied.",
+    "Deductible items such as mortgage interest, pension and life insurance contributions and donations are not modelled."
+  ],
+  "scale": {
+    "legalRef": "§ 16 zakona o danich z prijmu",
+    "threshold": "1762812",
+    "lowerRate": "0.15",
+    "upperRate": "0.23",
+    "note": "Two rates only. The threshold is set as 36 times the average monthly wage, so it moves every year with earnings rather than with prices. Since 2021 the base is gross salary; the old super-gross base is gone."
+  },
+  "taxpayerCredit": {
+    "legalRef": "§ 35ba odst. 1 pism. a)",
+    "amount": "30840",
+    "note": "A credit against the tax available to every taxpayer, which is what makes roughly the first CZK 205,600 of salary effectively free of income tax."
+  },
+  "socialInsurance": {
+    "legalRef": "Zakon c. 589/1992 Sb.",
+    "socialRate": "0.071",
+    "socialAnnualCap": "2350416",
+    "healthRate": "0.045",
+    "note": "Social security stops at 48 times the average monthly wage; health insurance has no ceiling. Neither is deductible from the income tax base."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "taxBaseDp": 0 },
+  "regions": [
+    {
+      "code": "cz",
+      "name": "Czech Republic",
+      "note": "Czech income tax has no regional component."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Hruba mzda (per month)",
+      "help": "Gross monthly salary. Social security stops once your pay for the year passes the cap, so your net pay rises in the last months of a high-earning year."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Zalohy na dan (per month)",
+      "help": "Monthly tax advances withheld by your employer, for the annual comparison."
+    }
+  ]
+}

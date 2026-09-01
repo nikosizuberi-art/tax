@@ -1,0 +1,75 @@
+{
+  "rulesetVersion": "mx-2026-0.1.0",
+  "country": "MX",
+  "year": 2026,
+  "yearLabel": "Ejercicio fiscal 2026",
+  "currency": "MXN",
+  "provenance": {
+    "source": "Ley del Impuesto sobre la Renta art. 152 (tarifa anual); PwC Worldwide Tax Summaries, Mexico",
+    "sourceUrl": "https://taxsummaries.pwc.com/mexico/individual/taxes-on-personal-income",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The eleven-row 2026 annual ISR tariff, with its lower limits, fixed quotas and rates on the excess, was read from PwC on 31 August 2026. IMSS employee contribution rates were not given there and are deliberately not invented here."
+  },
+  "verificationTodo": [
+    "Confirm the annual tariff against the DOF publication for 2026.",
+    "IMSS employee contributions are NOT computed. They depend on several ramos de seguro applied to the salario base de cotizacion, and this app asks you for the figure instead.",
+    "The subsidio para el empleo, which reduces or eliminates tax for low earners, is not modelled."
+  ],
+  "omissions": [
+    "The subsidio para el empleo is not modelled, so low incomes are overstated, in some cases substantially.",
+    "IMSS contributions are taken from what you enter rather than computed.",
+    "Personal deductions (medical expenses, mortgage interest, retirement savings) and their global cap are not modelled.",
+    "The exempt portions of aguinaldo, prima vacacional and PTU are not modelled."
+  ],
+  "tariff": {
+    "legalRef": "Art. 152 LISR, tarifa anual 2026",
+    "note": "Mexico states the tariff as a lower limit, a fixed quota and a rate on the excess over that limit. Eleven rows, from 1.92% to 35%.",
+    "rows": [
+      { "lowerLimit": "0.01", "fixedQuota": "0", "rate": "0.0192" },
+      { "lowerLimit": "10135.12", "fixedQuota": "194.59", "rate": "0.064" },
+      { "lowerLimit": "86022.12", "fixedQuota": "5051.37", "rate": "0.1088" },
+      { "lowerLimit": "151176.20", "fixedQuota": "12140.13", "rate": "0.16" },
+      { "lowerLimit": "175735.67", "fixedQuota": "16069.64", "rate": "0.1792" },
+      { "lowerLimit": "210403.70", "fixedQuota": "22282.14", "rate": "0.2136" },
+      { "lowerLimit": "424353.98", "fixedQuota": "67981.92", "rate": "0.2352" },
+      { "lowerLimit": "668840.15", "fixedQuota": "125485.07", "rate": "0.30" },
+      { "lowerLimit": "1276925.99", "fixedQuota": "307910.81", "rate": "0.32" },
+      { "lowerLimit": "1702567.98", "fixedQuota": "444116.23", "rate": "0.34" },
+      { "lowerLimit": "5107703.93", "fixedQuota": "1601862.46", "rate": "0.35" }
+    ]
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up" },
+  "regions": [
+    {
+      "code": "mx",
+      "name": "Mexico",
+      "note": "ISR on wages is federal. States levy a payroll tax on employers, not an income tax on employees."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Salario bruto (per month)",
+      "help": "Gross monthly salary. Add the aguinaldo to the month it is paid; its exempt portion is not modelled here."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "ISR retenido (per month)",
+      "help": "Income tax withheld each month, for the annual comparison."
+    },
+    {
+      "id": "imss",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Cuotas IMSS retenidas",
+      "help": "Your own IMSS contributions for the year. They depend on several ramos de seguro applied to your salario base de cotizacion, so this app asks for the figure from your payslips rather than guessing at it."
+    }
+  ]
+}

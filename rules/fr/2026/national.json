@@ -1,0 +1,120 @@
+{
+  "rulesetVersion": "fr-2026-0.1.0",
+  "country": "FR",
+  "year": 2026,
+  "yearLabel": "Impot 2026 sur les revenus de 2025",
+  "currency": "EUR",
+  "provenance": {
+    "source": "CGI art. 197 (bareme, decote, plafonnement du quotient familial); loi de finances pour 2026; LegiFiscal bareme 2026; PwC Worldwide Tax Summaries, France",
+    "sourceUrl": "https://www.legifiscal.fr/actualites-fiscales/4474-ir-bareme-2026-quotient-familial-decote.html",
+    "verifiedOn": "2026-08-31",
+    "confidence": "cited-unverified",
+    "notes": "The 2026 bareme, the decote formula and the quotient familial cap were read on 31 August 2026. The employee social contribution rates other than CSG and CRDS are a documented approximation, not a statutory figure."
+  },
+  "verificationTodo": [
+    "otherEmployeeContributionsRate of 11% is an approximation of retraite, chomage and complementaire contributions. Confirm against a real payslip or the URSSAF schedule.",
+    "Confirm the CSG rate of 9.2%, the deductible share of 6.8% and the 98.25% assiette for 2026.",
+    "Confirm the CEHR thresholds and rates, and whether the CDHR minimum-20% contribution applies."
+  ],
+  "omissions": [
+    "The prelevement a la source rate is not modelled; this computes the annual liability, not the monthly withholding.",
+    "The CDHR differential contribution ensuring a minimum 20% rate on very high incomes is not modelled.",
+    "Only the standard 10% abattement is applied. Frais reels are not modelled.",
+    "Reductions and credits d'impot (garde d'enfants, dons, emploi a domicile) are not modelled."
+  ],
+  "bareme": {
+    "legalRef": "Art. 197-I-1 CGI",
+    "note": "Applied to the quotient familial, that is taxable income divided by the number of parts, and the result is then multiplied back by the number of parts.",
+    "bands": [
+      { "upTo": "11600", "rate": "0" },
+      { "upTo": "29579", "rate": "0.11" },
+      { "upTo": "84577", "rate": "0.30" },
+      { "upTo": "181917", "rate": "0.41" },
+      { "upTo": null, "rate": "0.45" }
+    ]
+  },
+  "abattement": {
+    "legalRef": "Art. 83-3 CGI",
+    "rate": "0.10",
+    "minimum": "504",
+    "maximum": "14426",
+    "note": "A flat 10% deduction for professional expenses, with a floor and a ceiling. You may claim actual expenses instead, which this app does not model."
+  },
+  "quotientFamilial": {
+    "legalRef": "Art. 194 and 197-I-2 CGI",
+    "capPerHalfPart": "1807",
+    "note": "One part for a single person, half a part for each of the first two children and a full part from the third. The tax saving from each additional half-part is capped."
+  },
+  "decote": {
+    "legalRef": "Art. 197-I-4 CGI",
+    "singleCeiling": "1982",
+    "singleAmount": "897",
+    "rate": "0.4525",
+    "note": "Where the tax before decote is under the ceiling, the decote reduces it by the amount less 45.25% of the tax. It phases the tax in gently at the bottom of the scale."
+  },
+  "cehr": {
+    "legalRef": "Art. 223 sexies CGI",
+    "note": "An exceptional contribution on high incomes, charged on fiscal reference income rather than on the tax.",
+    "bands": [
+      { "upTo": "250000", "rate": "0" },
+      { "upTo": "500000", "rate": "0.03" },
+      { "upTo": null, "rate": "0.04" }
+    ]
+  },
+  "socialContributions": {
+    "legalRef": "Art. L136-1 CSS (CSG); ordonnance 96-50 (CRDS)",
+    "csgRate": "0.092",
+    "csgDeductibleRate": "0.068",
+    "crdsRate": "0.005",
+    "assietteRate": "0.9825",
+    "otherEmployeeContributionsRate": "0.11",
+    "note": "CSG and CRDS are charged on 98.25% of gross pay. Only 6.8 of the 9.2 CSG points are deductible from taxable income, so part of a social contribution is itself taxed."
+  },
+  "rounding": { "moneyDp": 2, "mode": "half-up", "finalTaxDp": 0 },
+  "regions": [
+    {
+      "code": "fr",
+      "name": "France metropolitaine",
+      "note": "The bareme is national. Overseas departments have rate reductions that are not modelled."
+    }
+  ],
+  "inputSchema": [
+    {
+      "id": "grossMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "label": "Salaire brut (per month)",
+      "help": "Gross monthly salary before any deduction."
+    },
+    {
+      "id": "taxWithheldMonthly",
+      "kind": "monthly-money",
+      "group": "income",
+      "optional": true,
+      "label": "Prelevement a la source (per month)",
+      "help": "Income tax withheld at source during the year, for the final comparison."
+    },
+    {
+      "id": "parts",
+      "kind": "enum",
+      "group": "personal",
+      "label": "Nombre de parts (quotient familial)",
+      "options": [
+        { "value": "1", "label": "1 - single, no children" },
+        { "value": "1.5", "label": "1,5 - single with one child" },
+        { "value": "2", "label": "2 - single with two children" },
+        { "value": "2.5", "label": "2,5 - single with three children" }
+      ],
+      "default": "1",
+      "help": "Your taxable income is divided by the number of parts, taxed, and then multiplied back. Each half-part saves tax, but the saving is capped at 1.807 EUR. Married and PACS couples file jointly, which is out of scope here."
+    },
+    {
+      "id": "pensionContributions",
+      "kind": "annual-money",
+      "group": "deductions",
+      "optional": true,
+      "label": "Versements PER deductibles",
+      "help": "Deductible contributions to a plan d'epargne retraite, within your available allowance. This app does not compute your plafond."
+    }
+  ]
+}
