@@ -199,6 +199,7 @@ export const sgAdapter: CountryAdapter = {
   currency: "SGD",
   label: "Singapore",
   contributionLabel: "CPF contributions",
+  hasWithholding: false,
   regionLabel: "Jurisdiction",
   regionNote: "Singapore has no state or municipal income tax, so there is only one option.",
 

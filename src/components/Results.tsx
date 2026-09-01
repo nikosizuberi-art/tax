@@ -67,7 +67,13 @@ export function ResultBlock({ result, blank }: { result: CalcResult; blank: bool
           </div>
         </div>
         <div className="footing-cell border-r-0">
-          <div className="footing-label">{refund ? "Refund due" : "Owing"}</div>
+          <div className="footing-label">
+            {adapter.hasWithholding === false
+              ? "Withheld at source"
+              : refund
+                ? "Refund due"
+                : "Owing"}
+          </div>
           <div
             className={`footing-value ${
               !blank && !s.withheld.isZero() && !refund ? "text-[var(--color-flag)]" : ""
@@ -76,7 +82,11 @@ export function ResultBlock({ result, blank }: { result: CalcResult; blank: bool
             {blank || s.withheld.isZero() ? "—" : money(s.balance.abs(), c, locale)}
           </div>
           <div className="citation mt-1">
-            {s.withheld.isZero() ? "enter tax withheld" : `${money(s.withheld, c, locale)} withheld`}
+            {adapter.hasWithholding === false
+              ? "nothing is withheld from pay here"
+              : s.withheld.isZero()
+                ? "enter tax withheld"
+                : `${money(s.withheld, c, locale)} withheld`}
           </div>
         </div>
       </div>

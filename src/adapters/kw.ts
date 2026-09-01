@@ -151,6 +151,7 @@ export const kwAdapter: CountryAdapter = {
   contributionLabel: "PIFSS social insurance",
   contributionNote:
     "Kuwaiti nationals only. Expatriate workers contribute nothing.",
+  hasWithholding: false,
   regionLabel: "Jurisdiction",
   regionNote:
     "Kuwait has no regional income tax or contribution variation, so there is only one option.",

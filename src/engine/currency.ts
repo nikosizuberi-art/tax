@@ -24,6 +24,20 @@ export const CURRENCIES: Record<string, CurrencySpec> = {
   SGD: { code: "SGD", locale: "en-SG", dp: 2, symbol: "S$" },
   INR: { code: "INR", locale: "en-IN", dp: 2, symbol: "₹" },
   AUD: { code: "AUD", locale: "en-AU", dp: 2, symbol: "A$" },
+  USD: { code: "USD", locale: "en-US", dp: 2, symbol: "$" },
+  DKK: { code: "DKK", locale: "da-DK", dp: 2, symbol: "kr" },
+  NOK: { code: "NOK", locale: "nb-NO", dp: 2, symbol: "kr" },
+  CZK: { code: "CZK", locale: "cs-CZ", dp: 2, symbol: "Kc" },
+  TRY: { code: "TRY", locale: "tr-TR", dp: 2, symbol: "TL" },
+  BRL: { code: "BRL", locale: "pt-BR", dp: 2, symbol: "R$" },
+  MXN: { code: "MXN", locale: "es-MX", dp: 2, symbol: "$" },
+  ZAR: { code: "ZAR", locale: "en-ZA", dp: 2, symbol: "R" },
+  NZD: { code: "NZD", locale: "en-NZ", dp: 2, symbol: "NZ$" },
+  SAR: { code: "SAR", locale: "en-SA", dp: 2, symbol: "SR" },
+  CNY: { code: "CNY", locale: "zh-CN", dp: 2, symbol: "Y" },
+  // The yen and the won are quoted without minor units.
+  JPY: { code: "JPY", locale: "ja-JP", dp: 0, symbol: "JPY" },
+  KRW: { code: "KRW", locale: "ko-KR", dp: 0, symbol: "KRW" },
 };
 
 /** Spain formats euro amounts differently from Germany and the Netherlands. */
@@ -32,6 +46,11 @@ export const LOCALE_OVERRIDES: Record<string, string> = {
   DE: "de-DE",
   NL: "nl-NL",
   BG: "bg-BG",
+  FR: "fr-FR",
+  IT: "it-IT",
+  IE: "en-IE",
+  PT: "pt-PT",
+  AT: "de-AT",
 };
 
 export function currencySpec(code: string): CurrencySpec {

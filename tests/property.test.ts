@@ -24,6 +24,21 @@ interface Jurisdiction {
   scale: number;
   /** Some systems legitimately reach a ~100% marginal rate; see the note. */
   maxMarginal?: number;
+  /**
+   * A few systems contain a genuine cliff, where crossing a threshold costs
+   * more than the extra income. Where that is real law we assert the size of
+   * the drop rather than pretending it does not happen.
+   */
+  maxTakeHomeDrop?: number;
+  /**
+   * Italy's trattamento integrativo is PAID to the worker rather than merely
+   * credited, so net tax genuinely goes below zero at low incomes, and the
+   * capienza condition attached to it makes tax fall as income rises. Both are
+   * real features of Italian law, so they are asserted with bounds rather than
+   * modelled away.
+   */
+  minTax?: number;
+  maxTaxDecrease?: number;
 }
 
 const JURISDICTIONS: Jurisdiction[] = [
@@ -52,6 +67,35 @@ const JURISDICTIONS: Jurisdiction[] = [
   // rounding the liability to the nearest ten rupees can nudge it just past it.
   { country: "IN", region: "in", topEffectiveRate: 0.3 * 1.25 * 1.04, scale: 90, maxMarginal: 1.2 },
   { country: "AU", region: "au", topEffectiveRate: 0.45 + 0.02, scale: 1 },
+
+  // The eighteen added in the second pass.
+  { country: "US", region: "ca", topEffectiveRate: 0.37 + 0.133, scale: 1 },
+  { country: "US", region: "ny", topEffectiveRate: 0.37 + 0.109, scale: 1 },
+  { country: "US", region: "il", topEffectiveRate: 0.37 + 0.0495, scale: 1 },
+  { country: "US", region: "tx", topEffectiveRate: 0.37, scale: 1 },
+  { country: "FR", region: "fr", topEffectiveRate: 0.45 + 0.04, scale: 1 },
+  { country: "IT", region: "lazio-roma", topEffectiveRate: 0.43 + 0.0333 + 0.009, scale: 1,
+    maxTakeHomeDrop: 1250, minTax: -1300, maxTaxDecrease: 1300 },
+  { country: "IT", region: "lombardia-milano", topEffectiveRate: 0.43 + 0.0123 + 0.008, scale: 1,
+    maxTakeHomeDrop: 1250, minTax: -1300, maxTaxDecrease: 1300 },
+  // Real cliff in Irish law: under EUR 13,000 no USC at all, over it the whole
+  // income is charged rather than only the excess.
+  { country: "IE", region: "ie", topEffectiveRate: 0.4 + 0.08, scale: 1, maxTakeHomeDrop: 200 },
+  { country: "PT", region: "continente", topEffectiveRate: 0.48 + 0.05, scale: 1 },
+  { country: "AT", region: "at", topEffectiveRate: 0.55, scale: 1 },
+  { country: "CZ", region: "cz", topEffectiveRate: 0.23, scale: 25 },
+  { country: "DK", region: "gennemsnit", topEffectiveRate: 0.6, scale: 7 },
+  { country: "DK", region: "hoej", topEffectiveRate: 0.6, scale: 7 },
+  { country: "NO", region: "no", topEffectiveRate: 0.22 + 0.178, scale: 10 },
+  { country: "JP", region: "jp", topEffectiveRate: 0.45 * 1.021 + 0.1, scale: 150 },
+  { country: "CN", region: "cn", topEffectiveRate: 0.45, scale: 7 },
+  { country: "KR", region: "kr", topEffectiveRate: 0.45 * 1.1, scale: 1300 },
+  { country: "NZ", region: "nz", topEffectiveRate: 0.39, scale: 1.5 },
+  { country: "BR", region: "br", topEffectiveRate: 0.275, scale: 5 },
+  { country: "MX", region: "mx", topEffectiveRate: 0.35, scale: 20 },
+  { country: "ZA", region: "za", topEffectiveRate: 0.45, scale: 18 },
+  { country: "TR", region: "tr", topEffectiveRate: 0.4, scale: 35 },
+  { country: "SA", region: "sa", topEffectiveRate: 0, scale: 4 },
 ];
 
 const at = (j: Jurisdiction, income: number) =>
@@ -60,26 +104,29 @@ const at = (j: Jurisdiction, income: number) =>
       grossMonthly: perMonth((income * j.scale) / 12),
       age: 40,
       nationality: "kuwaiti",
+      citizen: true,
     }),
   );
 
 describe.each(JURISDICTIONS)("property: $country / $region", (j) => {
   const incomes = BASE_INCOMES;
 
-  it("tax is monotonically non-decreasing in income", () => {
-    let previous = -1;
+  it("tax is monotonically non-decreasing in income, beyond any documented step", () => {
+    const tolerance = j.maxTaxDecrease ?? 0.01;
+    let previous = Number.NEGATIVE_INFINITY;
     for (const income of incomes) {
       const tax = at(j, income).summary.incomeTax.toNumber();
-      expect(tax).toBeGreaterThanOrEqual(previous - 0.01);
+      expect(tax).toBeGreaterThanOrEqual(previous - tolerance);
       previous = tax;
     }
   });
 
-  it("take-home never decreases when gross increases", () => {
+  it("take-home never decreases when gross increases, beyond any documented cliff", () => {
+    const tolerance = j.maxTakeHomeDrop ?? 0.01;
     let previous = -1;
     for (const income of incomes) {
       const takeHome = at(j, income).summary.takeHome.toNumber();
-      expect(takeHome).toBeGreaterThanOrEqual(previous - 0.01);
+      expect(takeHome).toBeGreaterThanOrEqual(previous - tolerance);
       previous = takeHome;
     }
   });
@@ -93,10 +140,11 @@ describe.each(JURISDICTIONS)("property: $country / $region", (j) => {
     }
   });
 
-  it("tax, contributions and take-home are never negative", () => {
+  it("contributions and take-home are never negative, and tax only where a transfer allows it", () => {
+    const floor = j.minTax ?? 0;
     for (const income of incomes) {
       const s = at(j, income).summary;
-      expect(s.incomeTax.isNegative()).toBe(false);
+      expect(s.incomeTax.toNumber()).toBeGreaterThanOrEqual(floor);
       expect(s.socialContributions.isNegative()).toBe(false);
       expect(s.takeHome.isNegative()).toBe(false);
     }
@@ -140,8 +188,8 @@ describe.each(JURISDICTIONS)("property: $country / $region", (j) => {
 });
 
 describe("property: every country is wired up consistently", () => {
-  it("all twelve adapters are registered and self-consistent", () => {
-    expect(COUNTRIES.length).toBe(12);
+  it("all thirty adapters are registered and self-consistent", () => {
+    expect(COUNTRIES.length).toBe(30);
     for (const { code } of COUNTRIES) {
       const adapter = adapters[code];
       expect(adapter.country).toBe(code);

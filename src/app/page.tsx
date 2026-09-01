@@ -111,8 +111,8 @@ export default function Page() {
               Estimate of liability
             </h1>
             <p className="f-statute mt-3 text-[0.9375rem] leading-relaxed text-[var(--color-ink-soft)]">
-              Twelve jurisdictions, each computed through its own pipeline — because a bracket table
-              is not how any of them actually works. Every figure is shown with the line that
+              Thirty jurisdictions, each computed through its own pipeline — because a bracket
+              table is not how any of them actually works. Every figure is shown with the line that
               produced it and the authority behind it.
             </p>
           </div>

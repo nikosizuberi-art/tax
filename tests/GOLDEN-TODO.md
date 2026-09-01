@@ -2,13 +2,13 @@
 
 ## What the current suite proves
 
-268 tests pass across six files and twelve countries. They prove that:
+494 tests pass across seven files and thirty countries. They prove that:
 
 - each pipeline runs in the order its jurisdiction actually requires;
 - the arithmetic matches values derived **longhand from the ruleset figures**, written out in the comment above each assertion;
-- the structural traps are handled — Spain's rate-scale subtraction, Canada's credits at the lowest rate and Ontario's surtax on tax, Hong Kong's lower-of-two computations, Germany's polynomial zones joining continuously, the UK's 60% band and per-period NI, the Dutch double taper, Poland's non-deductible health charge, Singapore's single relief cap, India's two marginal reliefs and cess, Australia's shade-in and non-refundable offset, Kuwait's absence of an income tax;
-- monthly ceilings are applied monthly, annual ceilings annually, and a partial year is never annualised;
-- the invariants hold across 29 income points in 18 jurisdiction configurations.
+- the structural traps are handled — Spain's rate-scale subtraction, Canada's credits at the lowest rate and Ontario's surtax on tax, Hong Kong's lower-of-two computations, Germany's polynomial zones joining continuously, the UK's 60% band and per-period NI, France's quotient familial and its cap, Ireland's three bases and USC cliff, Italy's tapering credit and paid-out transfer, Austria's separate 6% base, Czechia's non-deductible contributions, Denmark's 8%-first ordering, Norway's two bases, Japan's flattening deduction, Korea's premium-on-a-premium, Brazil's genuinely monthly computation, South Africa's rebate-derived threshold, Türkiye's universal minimum-wage exemption, and the absence of any income tax in Kuwait and Saudi Arabia;
+- monthly ceilings are applied monthly, annual ceilings annually, mid-year rate changes on the right months, and a partial year is never annualised;
+- the invariants hold across 29 income points in 36 jurisdiction configurations.
 
 ## What the current suite does NOT prove
 
@@ -16,52 +16,68 @@
 
 ## Source quality, by country
 
-Read on 31 August 2026. Ranked by how much weight the figures can bear.
+Read in August 2026. Ranked by how much weight the figures can bear.
 
 | Confidence | Country | Source actually used |
 | --- | --- | --- |
-| **Statute text fetched directly** | Germany | §32a EStG at gesetze-im-internet.de, which states the version applies from assessment year 2026. The five zones join continuously under test, which independently corroborates the coefficients. |
-| **Tax authority table fetched directly** | Netherlands | The Belastingdienst's own 2026 arbeidskorting table. |
-| **Reputable secondary, fetched** | Hong Kong, UK, Poland, Singapore, India, Australia, Bulgaria, Kuwait | PwC Worldwide Tax Summaries, plus a government press release for Hong Kong's 2026/27 allowances. |
+| **Statute text fetched directly** | Germany | §32a EStG at gesetze-im-internet.de, stating it applies from assessment year 2026. The five zones join continuously under test, which independently corroborates the coefficients. |
+| **Authority table fetched directly** | Netherlands | The Belastingdienst's own 2026 arbeidskorting table. |
+| **Table that reconciles internally** | Brazil | The 2026 INSS table reconciles exactly to the published maximum: 8,475.55 × 14% − 198.49 = 988.09. |
+| **Reputable secondary, fetched** | Hong Kong, UK, France, Italy, Ireland, Portugal, Austria, Czechia, Denmark, Norway, Poland, Singapore, India, Australia, New Zealand, Japan, China, Korea, Mexico, South Africa, Türkiye, Bulgaria, Kuwait, Saudi Arabia, United States | PwC Worldwide Tax Summaries, the Tax Foundation for US federal and state tables, and national practitioner or payroll summaries for the rest. |
 | **Transcribed from the build brief** | Spain (state scale), Canada (federal) | Supplied in the original specification, not independently fetched. |
-| **Derived by indexation** | Spain (all four regional scales), Canada (Ontario, BC, Alberta) | Previous-year figures multiplied by each jurisdiction's published indexation factor. The weakest figures in the project. |
+| **Derived by indexation** | Spain (all four regional scales), Canada (Ontario, BC, Alberta) | Previous-year figures multiplied by each jurisdiction's published indexation factor. Still the weakest figures in the project. |
+
+## Figures that were NOT confirmed by any source
+
+These were carried from general knowledge because no source in the research pass gave them. Each one materially affects its country's result and should be treated as the first thing to check.
+
+| Figure | File |
+| --- | --- |
+| Austrian social security rate (18.07%) and monthly ceiling (€6,450) | `rules/at/2026/national.json` |
+| Austrian Verkehrsabsetzbetrag (€487) | `rules/at/2026/national.json` |
+| Czech taxpayer credit (CZK 30,840) and contribution rates | `rules/cz/2026/national.json` |
+| Korean earned income deduction rate schedule (only its KRW 20m cap was confirmed) | `rules/kr/2026/national.json` |
+| Korean social insurance rates | `rules/kr/2026/national.json` |
+| Japanese social insurance rates, and no ceilings applied | `rules/jp/2026/national.json` |
+| Italian INPS employee rate (9.19%) | `rules/it/2026/national.json` |
+| Italian regional and municipal surcharge rates, modelled as flat | `rules/it/2026/national.json` |
+| French "other employee contributions" (11%), an approximation of a real payslip | `rules/fr/2026/national.json` |
+| Portuguese specific deduction floor (derived from 8.54 × IAS) | `rules/pt/2026/national.json` |
+| US Social Security wage base — the 2025 figure carried forward | `rules/us/2026/national.json` |
+| Chinese IIT thresholds and quick deductions (corroborated by search, not by the STA) | `rules/cn/2026/national.json` |
+| Brazilian monthly IRRF table bands | `rules/br/2026/national.json` |
+
+## Where sources actively conflicted
+
+- **Denmark.** PwC gives a single top tax of 7.5% above DKK 845,543. Danish reform summaries give mellemskat 7.5% above 641,200, topskat 7.5% above 777,900 and top-topskat 5% above 2,592,700. The reform figures are used. The employment allowance maximum was reported as both DKK 56,200 and DKK 63,300; the higher is used. **Confirm with Skattestyrelsen before relying on any Danish figure.**
 
 ## To close the gap before shipping
 
 For each country, take the tax authority's own worked examples and add them as tests with the published result as the expected value:
 
-- **Spain** — AEAT *Manual Práctico Renta*, chapters on rendimientos del trabajo, mínimo personal y familiar and cálculo del impuesto. Cross-check one full return per region against Renta WEB.
-- **Canada** — CRA **T4127**, Chapter 8 (annual formula) for Ontario, BC and Alberta.
-- **Hong Kong** — the IRD's own tax computation examples and its online calculator.
+- **Spain** — AEAT *Manual Práctico Renta*; cross-check a full return per region against Renta WEB.
+- **Canada** — CRA **T4127**, Chapter 8, for Ontario, BC and Alberta.
+- **United States** — IRS Publication 15-T and each state revenue department; confirm the SSA wage base.
+- **France** — the impots.gouv.fr simulator, especially at the quotient familial cap and inside the décote.
 - **Germany** — the BMF *Lohn- und Einkommensteuerrechner*, which implements §32a directly.
-- **UK** — HMRC's PAYE and Scottish rate examples; confirm the 2026/27 NI thresholds.
-- **Netherlands** — the Belastingdienst *loonbelastingtabellen*.
-- **Poland** — Ministry of Finance PIT examples; confirm the deductible-cost amounts.
-- **Singapore** — IRAS worked examples and the CPF contribution calculator.
-- **India** — the Income Tax Department's e-filing tax calculator, especially at the ₹12,00,000 rebate boundary and each surcharge threshold.
-- **Australia** — the ATO *Simple tax calculator*, and its Medicare levy and LITO worked examples.
-- **Bulgaria / Kuwait** — NRA and PIFSS published schedules.
+- **UK** — HMRC PAYE and Scottish rate examples; confirm the 2026/27 NI thresholds.
+- **Ireland** — Revenue's own examples, especially at the USC exemption cliff.
+- **Italy** — Agenzia delle Entrate, for the detrazione and the trattamento integrativo conditions.
+- **Everywhere else** — the national authority's own calculator: Belastingdienst, Autoridade Tributária, BMF Austria, Finanční správa, Skattestyrelsen, Skatteetaten, NTA Japan, STA China, NTS Korea, IRAS, Inland Revenue NZ, Receita Federal, SAT Mexico, SARS, GİB Türkiye, NRA Bulgaria, PIFSS and GOSI.
 
 Then set `provenance.verifiedOn` and change `confidence` to `"verified"` — one file at a time, only once its figures have actually been checked — and work through each ruleset's `verificationTodo` array.
 
-## Highest-risk figures
+## Known modelling omissions that make a figure clearly wrong
 
-Each is the single line to correct in the named file.
+Each is recorded in the relevant ruleset's `omissions` and surfaced on the result page, but these are the ones that move a number the most:
 
-| Figure | File | Risk if wrong |
-| --- | --- | --- |
-| All four regional scales | `rules/es/2026/*.json` | Shifts every Spanish result in that region |
-| Monthly maximum contribution base | `rules/es/2026/_national.json` | 2025 value carried forward; understates contributions for high earners |
-| Work-income reduction amounts | `rules/es/2026/_national.json` | Materially affects everyone under about €23,300 |
-| Provincial brackets and BPAs | `rules/ca/2026/{on,bc,ab}.json` | Derived by indexation, not published figures |
-| Alberta indexation | `rules/ca/2026/ab.json` | Alberta has suspended indexation in past years |
-| Class 1 NI thresholds | `rules/gb/2026/national.json` | Source stated them as "2025/26 onwards", not as 2026/27 figures |
-| Scottish band boundaries | `rules/gb/2026/national.json` | Expressed as taxable income after the allowance; the published figures are total income |
-| Contribution ceilings | `rules/de/2026/national.json` | From secondary sources, not the Rechengrößenverordnung |
-| Algemene heffingskorting | `rules/nl/2026/national.json` | From a search summary, unlike the arbeidskorting table |
-| Deductible costs | `rules/pl/2026/national.json` | PLN 250/month was not re-checked in this pass |
-| CPF ceiling and relief cap | `rules/sg/2026/national.json` | Ceiling rose in 2026; confirm the year applied |
-| Slabs for FY 2026-27 | `rules/in/2026/national.json` | Source stated "FY 2025/26 onwards"; a Finance Act 2026 change would supersede |
-| Medicare threshold and LITO | `rules/au/2026/national.json` | Secondary sources only |
-| PIFSS ceilings | `rules/kw/2026/national.json` | Two separate ceilings on two rates; both need confirming |
-| Maximum insurance base | `rules/bg/2026/national.json` | Changes mid-year; confirm both halves |
+| Omission | Effect |
+| --- | --- |
+| Mexico's subsidio para el empleo | Overstates tax at low incomes, sometimes to zero-vs-nonzero |
+| Japan's 2026 income-dependent basic deduction supplement | Overstates tax for many taxpayers |
+| Korea's earned income tax credit | Overstates tax for most employees |
+| Portugal's mínimo de existência | Overstates tax at low incomes |
+| Ontario's LIFT credit and BC's tax reduction | Overstate tax at low incomes |
+| Sweden-style employment credits generally | Not applicable — Sweden is excluded for this reason |
+| KiwiSaver, UK student loans, HELP repayments | Understate total deductions from pay |
+| China's city-specific social insurance | Overstates taxable income unless the user enters their own figure |

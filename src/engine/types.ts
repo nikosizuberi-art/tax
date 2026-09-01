@@ -18,7 +18,25 @@ export type CountryCode =
   | "PL"
   | "SG"
   | "IN"
-  | "AU";
+  | "AU"
+  | "US"
+  | "FR"
+  | "IT"
+  | "IE"
+  | "PT"
+  | "AT"
+  | "CZ"
+  | "DK"
+  | "NO"
+  | "JP"
+  | "CN"
+  | "KR"
+  | "NZ"
+  | "BR"
+  | "MX"
+  | "ZA"
+  | "TR"
+  | "SA";
 
 export interface Provenance {
   source: string;
@@ -107,6 +125,11 @@ export interface CountryAdapter {
   contributionLabel: string;
   /** Shown under the contributions figure where it needs explaining. */
   contributionNote?: string;
+  /**
+   * False where the country withholds nothing from an employee, so the result
+   * block does not invite a comparison that cannot be made.
+   */
+  hasWithholding?: boolean;
   regions(year: number): Array<{ code: string; name: string }>;
   years(): number[];
   fields(year: number, regionCode: string): FieldSpec[];
